@@ -51,8 +51,8 @@ func (u *userRepository) FindById(id string) (domain.User, error) {
 	}
 
 	result := u.collection.FindOne(context.Background(), bson.M{"_id": objectId})
-	user := domain.User{}
-	err = result.Decode(user)
+	var user = domain.User{}
+	err = result.Decode(&user)
 	return user, err
 
 }

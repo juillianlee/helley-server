@@ -1,9 +1,9 @@
 package helper
 
 type StoreUserRequest struct {
-	Name     string
-	Email    string
-	Password string
+	Name     string `validate:"required"`
+	Email    string `validate:"required,email"`
+	Password string `validate:"required"`
 }
 
 type StoreUserResponse struct {

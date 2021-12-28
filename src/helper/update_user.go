@@ -1,6 +1,6 @@
 package helper
 
 type UpdateUserRequest struct {
-	Name  string
-	Email string
+	Name  string `validate:"required"`
+	Email string `validate:"required,email"`
 }

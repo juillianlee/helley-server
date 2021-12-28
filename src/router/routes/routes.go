@@ -1,10 +1,12 @@
 package routes
 
-import "net/http"
+import (
+	"github.com/labstack/echo/v4"
+)
 
 type Route struct {
 	Path                   string
 	Method                 string
-	HandleFunc             func(http.ResponseWriter, *http.Request)
+	HandleFunc             func(c echo.Context) (err error)
 	RequiredAuthentication bool
 }

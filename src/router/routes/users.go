@@ -41,19 +41,19 @@ func makeUserRoutes(handler controller.UserController) []Route {
 			RequiredAuthentication: false,
 		},
 		{
-			Path:                   "/users/{id}",
+			Path:                   "/users/:id",
 			Method:                 http.MethodGet,
 			HandleFunc:             handler.FindById,
 			RequiredAuthentication: false,
 		},
 		{
-			Path:                   "/users/{id}",
+			Path:                   "/users/:id",
 			Method:                 http.MethodPut,
 			HandleFunc:             handler.Update,
 			RequiredAuthentication: false,
 		},
 		{
-			Path:                   "/users/{id}",
+			Path:                   "/users/:id",
 			Method:                 http.MethodDelete,
 			HandleFunc:             handler.DeleteById,
 			RequiredAuthentication: false,

@@ -3,19 +3,17 @@ package controller
 import (
 	"app-helley/src/helper"
 	usecase "app-helley/src/usecase/user"
-	"encoding/json"
-	"io/ioutil"
 	"net/http"
 
-	"github.com/gorilla/mux"
+	"github.com/labstack/echo/v4"
 )
 
 type UserController interface {
-	Store(http.ResponseWriter, *http.Request)
-	Update(http.ResponseWriter, *http.Request)
-	DeleteById(http.ResponseWriter, *http.Request)
-	Find(http.ResponseWriter, *http.Request)
-	FindById(http.ResponseWriter, *http.Request)
+	Store(c echo.Context) (err error)
+	Update(c echo.Context) (err error)
+	DeleteById(c echo.Context) (err error)
+	Find(c echo.Context) (err error)
+	FindById(c echo.Context) (err error)
 }
 
 type userController struct {
@@ -42,115 +40,77 @@ func NewUserController(
 	}
 }
 
-func (u *userController) Store(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
-	body, err := ioutil.ReadAll(r.Body)
-
-	if err != nil {
-		helper.GetError(w, err)
-		return
+func (u *userController) Store(c echo.Context) (err error) {
+	storeUser := new(helper.StoreUserRequest)
+	if err := c.Bind(storeUser); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	var storeUser helper.StoreUserRequest
-	if err = json.Unmarshal(body, &storeUser); err != nil {
-		helper.GetError(w, err)
-		return
+	if err := c.Validate(storeUser); err != nil {
+		return err
 	}
 
 	response, err := u.storeUserUseCase.Handle(storeUser)
 
 	if err != nil {
-		helper.GetError(w, err)
-		return
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	if errEncode := helper.RequestEncode(w, response); errEncode != nil {
-		w.WriteHeader(500)
-	}
+	return c.JSON(http.StatusCreated, response)
 }
 
-func (u *userController) Update(w http.ResponseWriter, r *http.Request) {
-	helper.SetContentTypeJson(w)
+func (u *userController) Update(c echo.Context) (err error) {
+	userUpdate := new(helper.UpdateUserRequest)
 
-	body, err := ioutil.ReadAll(r.Body)
-
-	if err != nil {
-		helper.GetError(w, err)
-		return
+	if err := c.Bind(userUpdate); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	var userUpdate helper.UpdateUserRequest
-	if err = json.Unmarshal(body, &userUpdate); err != nil {
-		helper.GetError(w, err)
-		return
+	if err := c.Validate(userUpdate); err != nil {
+		return err
 	}
 
-	params := mux.Vars(r)
-	id := params["id"]
+	id := c.Param("id")
 
 	response, err := u.updateUserUseCase.Handle(id, userUpdate)
 
 	if err != nil {
-		helper.GetError(w, err)
-		return
+		return err
 	}
 
-	if errEncode := helper.RequestEncode(w, response); errEncode != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-	}
+	return c.JSON(http.StatusOK, response)
 }
 
-func (u *userController) DeleteById(w http.ResponseWriter, r *http.Request) {
-	helper.SetContentTypeJson(w)
-
-	params := mux.Vars(r)
-	id := params["id"]
+func (u *userController) DeleteById(c echo.Context) (err error) {
+	id := c.Param("id")
 
 	response, err := u.deleteUserUseCase.Handle(id)
 
 	if err != nil {
-		helper.GetError(w, err)
-		return
+		return err
 	}
 
-	if errEncode := helper.RequestEncode(w, response); errEncode != nil {
-		helper.GetError(w, err)
-		return
-	}
+	return c.JSON(http.StatusOK, response)
 }
 
-func (u *userController) Find(w http.ResponseWriter, r *http.Request) {
-	helper.SetContentTypeJson(w)
+func (u *userController) Find(c echo.Context) (err error) {
 
 	response, err := u.usersUseCase.Handle()
 
 	if err != nil {
-		helper.GetError(w, err)
-		return
+		return err
 	}
 
-	if errEncode := helper.RequestEncode(w, response); errEncode != nil {
-		helper.GetError(w, err)
-	}
+	return c.JSON(http.StatusOK, response)
 }
 
-func (u *userController) FindById(w http.ResponseWriter, r *http.Request) {
-	helper.SetContentTypeJson(w)
-	helper.SetContentTypeJson(w)
-
-	params := mux.Vars(r)
-	id := params["id"]
-
+func (u *userController) FindById(c echo.Context) (err error) {
+	id := c.Param("id")
 	response, err := u.userUseCase.Handle(id)
 
 	if err != nil {
-		helper.GetError(w, err)
-		return
+		return err
 	}
 
-	if errEncode := helper.RequestEncode(w, response); errEncode != nil {
-		helper.GetError(w, err)
-	}
-
+	return c.JSON(http.StatusOK, response)
 }

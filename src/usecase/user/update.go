@@ -6,7 +6,7 @@ import (
 )
 
 type UpdateUserUseCase interface {
-	Handle(id string, helper helper.UpdateUserRequest) (helper.MessageResponse, error)
+	Handle(id string, helper *helper.UpdateUserRequest) (helper.MessageResponse, error)
 }
 
 type updateUseUseCase struct {
@@ -19,7 +19,7 @@ func NewUpdateUserUseCase(userRepository repository.UserRepository) UpdateUserUs
 	}
 }
 
-func (usecase *updateUseUseCase) Handle(id string, h helper.UpdateUserRequest) (helper.MessageResponse, error) {
+func (usecase *updateUseUseCase) Handle(id string, h *helper.UpdateUserRequest) (helper.MessageResponse, error) {
 	user, err := usecase.userRepository.FindById(id)
 
 	if err != nil {

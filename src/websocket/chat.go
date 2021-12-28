@@ -1,103 +1,94 @@
 package websocket
 
-import (
-	"fmt"
-	"log"
-	"net/http"
-	"strings"
+// var upgrader = websocket.Upgrader{}
+// var messages []string
 
-	"github.com/gorilla/websocket"
-)
+// func getCmd(input string) string {
+// 	inputArr := strings.Split(input, " ")
+// 	return inputArr[0]
+// }
 
-var upgrader = websocket.Upgrader{}
-var messages []string
+// func getMessage(input string) string {
+// 	inputArr := strings.Split(input, " ")
+// 	var result string
+// 	for i := 1; i < len(inputArr); i++ {
+// 		result += inputArr[i]
+// 	}
+// 	return result
+// }
 
-func getCmd(input string) string {
-	inputArr := strings.Split(input, " ")
-	return inputArr[0]
-}
+// func updateTodoList(input string) {
+// 	tmpList := messages
+// 	messages = []string{}
+// 	for _, val := range tmpList {
+// 		if val == input {
+// 			continue
+// 		}
+// 		messages = append(messages, val)
+// 	}
+// }
 
-func getMessage(input string) string {
-	inputArr := strings.Split(input, " ")
-	var result string
-	for i := 1; i < len(inputArr); i++ {
-		result += inputArr[i]
-	}
-	return result
-}
+// type ChatWebsocket interface {
+// 	Chat(http.ResponseWriter, *http.Request)
+// 	ChatView(http.ResponseWriter, *http.Request)
+// }
 
-func updateTodoList(input string) {
-	tmpList := messages
-	messages = []string{}
-	for _, val := range tmpList {
-		if val == input {
-			continue
-		}
-		messages = append(messages, val)
-	}
-}
+// type chatWebsocket struct {
+// }
 
-type ChatWebsocket interface {
-	Chat(http.ResponseWriter, *http.Request)
-	ChatView(http.ResponseWriter, *http.Request)
-}
+// func NewChatWebsocket() ChatWebsocket {
+// 	return &chatWebsocket{}
+// }
 
-type chatWebsocket struct {
-}
+// func (c *chatWebsocket) Chat(w http.ResponseWriter, r *http.Request) {
 
-func NewChatWebsocket() ChatWebsocket {
-	return &chatWebsocket{}
-}
+// 	conn, err := upgrader.Upgrade(w, r, nil)
 
-func (c *chatWebsocket) Chat(w http.ResponseWriter, r *http.Request) {
+// 	if err != nil {
+// 		log.Print("upgrade fail: ", err)
+// 		return
+// 	}
 
-	conn, err := upgrader.Upgrade(w, r, nil)
+// 	defer conn.Close()
 
-	if err != nil {
-		log.Print("upgrade fail: ", err)
-		return
-	}
+// 	for {
+// 		mt, message, err := conn.ReadMessage()
 
-	defer conn.Close()
+// 		fmt.Println(mt)
 
-	for {
-		mt, message, err := conn.ReadMessage()
+// 		if err != nil {
+// 			log.Println("read failed: ", err)
+// 		}
 
-		fmt.Println(mt)
+// 		input := string(message)
+// 		cmd := getCmd(input)
+// 		msg := getMessage(input)
 
-		if err != nil {
-			log.Println("read failed: ", err)
-		}
+// 		if cmd == "add" {
+// 			messages = append(messages, msg)
+// 		} else if cmd == "done" {
+// 			updateTodoList(msg)
+// 		}
 
-		input := string(message)
-		cmd := getCmd(input)
-		msg := getMessage(input)
+// 		output := "Current Messages: \n"
 
-		if cmd == "add" {
-			messages = append(messages, msg)
-		} else if cmd == "done" {
-			updateTodoList(msg)
-		}
+// 		for _, message := range messages {
+// 			output += "\n - " + message + "\n"
+// 		}
 
-		output := "Current Messages: \n"
+// 		output += "\n----------------------------------------"
 
-		for _, message := range messages {
-			output += "\n - " + message + "\n"
-		}
+// 		message = []byte(output)
 
-		output += "\n----------------------------------------"
+// 		err = conn.WriteMessage(mt, message)
 
-		message = []byte(output)
+// 		if err != nil {
+// 			log.Println("write failed: ", err)
+// 			break
+// 		}
+// 	}
+// }
 
-		err = conn.WriteMessage(mt, message)
-
-		if err != nil {
-			log.Println("write failed: ", err)
-			break
-		}
-	}
-}
-
-func (c *chatWebsocket) ChatView(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "websockets.html")
-}
+// func (c *chatWebsocket) ChatView(w http.ResponseWriter, r *http.Request) {
+// 	http.ServeFile(w, r, "websockets.html")
+// }

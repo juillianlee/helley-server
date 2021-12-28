@@ -2,30 +2,49 @@ package router
 
 import (
 	"app-helley/src/router/routes"
+	"net/http"
 
-	"github.com/gorilla/mux"
+	"github.com/go-playground/validator/v10"
+	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/mongo"
 )
+
+type Validator struct {
+	validator *validator.Validate
+}
+
+func (cv *Validator) Validate(i interface{}) error {
+	if err := cv.validator.Struct(i); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return nil
+}
 
 /**
 Generates new router to application with router configured
 */
-func NewRouter(db *mongo.Database) *mux.Router {
-	router := mux.NewRouter()
+func NewRouter(db *mongo.Database) *echo.Echo {
+	e := echo.New()
+
+	e.Validator = &Validator{validator: validator.New()}
 
 	userRoutes := routes.CreateUserRoutes(db)
-	chatRoutes := routes.CreateChatRoutes(db)
 
 	var routesHandle []routes.Route
 	routesHandle = append(routesHandle, userRoutes...)
-	routesHandle = append(routesHandle, chatRoutes...)
 
 	for _, route := range routesHandle {
-		r := router.HandleFunc(route.Path, route.HandleFunc)
-		if route.Method != "" {
-			r.Methods(route.Method)
+		switch route.Method {
+		case http.MethodPut:
+			e.PUT(route.Path, route.HandleFunc)
+		case http.MethodGet:
+			e.GET(route.Path, route.HandleFunc)
+		case http.MethodPost:
+			e.POST(route.Path, route.HandleFunc)
+		case http.MethodDelete:
+			e.DELETE(route.Path, route.HandleFunc)
 		}
 	}
 
-	return router
+	return e
 }

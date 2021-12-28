@@ -7,7 +7,7 @@ import (
 )
 
 type StoreUserUseCase interface {
-	Handle(storeUser helper.StoreUserRequest) (helper.StoreUserResponse, error)
+	Handle(storeUser *helper.StoreUserRequest) (helper.StoreUserResponse, error)
 }
 
 type storeUserUseCase struct {
@@ -20,7 +20,7 @@ func NewStoreUserUseCase(userRepository repository.UserRepository) StoreUserUseC
 	}
 }
 
-func (usecase *storeUserUseCase) Handle(storeUser helper.StoreUserRequest) (helper.StoreUserResponse, error) {
+func (usecase *storeUserUseCase) Handle(storeUser *helper.StoreUserRequest) (helper.StoreUserResponse, error) {
 	user := domain.User{
 		Name:     storeUser.Name,
 		Email:    storeUser.Email,
