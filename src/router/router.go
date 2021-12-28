@@ -14,12 +14,17 @@ func NewRouter(db *mongo.Database) *mux.Router {
 	router := mux.NewRouter()
 
 	userRoutes := routes.CreateUserRoutes(db)
+	chatRoutes := routes.CreateChatRoutes(db)
 
 	var routesHandle []routes.Route
 	routesHandle = append(routesHandle, userRoutes...)
+	routesHandle = append(routesHandle, chatRoutes...)
 
 	for _, route := range routesHandle {
-		router.HandleFunc(route.Path, route.HandleFunc).Methods(route.Method)
+		r := router.HandleFunc(route.Path, route.HandleFunc)
+		if route.Method != "" {
+			r.Methods(route.Method)
+		}
 	}
 
 	return router

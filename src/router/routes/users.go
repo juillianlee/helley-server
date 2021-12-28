@@ -23,10 +23,10 @@ func CreateUserRoutes(db *mongo.Database) []Route {
 		usersUseCase,
 		userUseCase,
 	)
-	return makeRoutes(userController)
+	return makeUserRoutes(userController)
 }
 
-func makeRoutes(handler controller.UserController) []Route {
+func makeUserRoutes(handler controller.UserController) []Route {
 	return []Route{
 		{
 			Path:                   "/users",
