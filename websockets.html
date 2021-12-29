@@ -1,44 +1,37 @@
-<html>
-  <div>
-    <h1>Go websockets TODO example</h1>
-    <p>Available commands for todo app</p>
-    <p>- add [task]</p>
-    <p>- done [task]</p>
-    <input id="input" type="text" size="40" />
-    <button onclick="send()">Send</button>
-    <pre id="output"></pre>
-  </div>
-  <style>
-    html {
-      text-align: center;
-      font-size: 16px;
-    }
-    div {
-      padding: 1rem;
-    }
-    #input {
-      font-size: 16px;
-    }
-    p {
-        font-size: 16px;
-    }
-  </style>
-  <script>
-    var input = document.getElementById("input");
-    var output = document.getElementById("output");
-    var socket = new WebSocket("ws://localhost:3000/chat");
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>WebSocket</title>
+  </head>
 
-    socket.onopen = function () {
-      output.innerHTML += "Status: Connected\n";
-    };
+  <body>
+    <p id="output"></p>
 
-    socket.onmessage = function (e) {
-      output.innerHTML += "\nServer: " + e.data + "\n";
-    };
+    <script>
+      var loc = window.location;
+      var uri = "ws:";
 
-    function send() {
-      socket.send(input.value);
-      input.value = "";
-    }
-  </script>
+      if (loc.protocol === "https:") {
+        uri = "wss:";
+      }
+      uri += "//" + loc.host;
+      uri += loc.pathname + "ws";
+
+      ws = new WebSocket(uri);
+
+      ws.onopen = function () {
+        console.log("Connected");
+      };
+
+      ws.onmessage = function (evt) {
+        var out = document.getElementById("output");
+        out.innerHTML += evt.data + "<br>";
+      };
+
+      setInterval(function () {
+        ws.send("Hello, Server!");
+      }, 1000);
+    </script>
+  </body>
 </html>

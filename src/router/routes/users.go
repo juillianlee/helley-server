@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"app-helley/src/config"
 	"app-helley/src/controller"
 	"app-helley/src/repository"
 	usecase "app-helley/src/usecase/user"
@@ -9,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func CreateUserRoutes(db *mongo.Database) []Route {
+func CreateUserRoutes(db *mongo.Database) []config.Route {
 	userRepository := repository.NewUserRepository(db)
 	storeUserUseCase := usecase.NewStoreUserUseCase(userRepository)
 	userUpdateUseCase := usecase.NewUpdateUserUseCase(userRepository)
@@ -26,8 +27,8 @@ func CreateUserRoutes(db *mongo.Database) []Route {
 	return makeUserRoutes(userController)
 }
 
-func makeUserRoutes(handler controller.UserController) []Route {
-	return []Route{
+func makeUserRoutes(handler controller.UserController) []config.Route {
+	return []config.Route{
 		{
 			Path:                   "/users",
 			Method:                 http.MethodGet,

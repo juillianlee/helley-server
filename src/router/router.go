@@ -1,6 +1,7 @@
 package router
 
 import (
+	"app-helley/src/config"
 	"app-helley/src/router/routes"
 	"net/http"
 
@@ -29,9 +30,11 @@ func NewRouter(db *mongo.Database) *echo.Echo {
 	e.Validator = &Validator{validator: validator.New()}
 
 	userRoutes := routes.CreateUserRoutes(db)
+	websocketRoutes := routes.CreateWebsocketRoutes()
 
-	var routesHandle []routes.Route
+	var routesHandle []config.Route
 	routesHandle = append(routesHandle, userRoutes...)
+	routesHandle = append(routesHandle, websocketRoutes...)
 
 	for _, route := range routesHandle {
 		switch route.Method {
