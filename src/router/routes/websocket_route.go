@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/websocket"
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo"
 )
 
 var pool = hWebsocket.NewPool()
@@ -41,7 +41,7 @@ func handleFile(c echo.Context) error {
 	return c.File("websockets.html")
 }
 
-func CreateWebsocketRoutes() []config.Route {
+func NewWebsocketRoutes() []config.Route {
 	go pool.Start()
 
 	return makeWebSocketRoutes()

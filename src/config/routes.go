@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo"
 )
 
 type Route struct {

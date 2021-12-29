@@ -1,4 +1,4 @@
-package usecase
+package user
 
 import (
 	"app-helley/src/helper"

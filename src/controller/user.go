@@ -5,7 +5,7 @@ import (
 	usecase "app-helley/src/usecase/user"
 	"net/http"
 
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo"
 )
 
 type UserController interface {
@@ -40,6 +40,7 @@ func NewUserController(
 	}
 }
 
+// Create new user on database
 func (u *userController) Store(c echo.Context) (err error) {
 	storeUser := new(helper.StoreUserRequest)
 	if err := c.Bind(storeUser); err != nil {
@@ -59,6 +60,7 @@ func (u *userController) Store(c echo.Context) (err error) {
 	return c.JSON(http.StatusCreated, response)
 }
 
+// Update user on database
 func (u *userController) Update(c echo.Context) (err error) {
 	userUpdate := new(helper.UpdateUserRequest)
 
@@ -81,6 +83,7 @@ func (u *userController) Update(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, response)
 }
 
+// Delete user on database
 func (u *userController) DeleteById(c echo.Context) (err error) {
 	id := c.Param("id")
 
@@ -93,6 +96,7 @@ func (u *userController) DeleteById(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, response)
 }
 
+// Find user on database
 func (u *userController) Find(c echo.Context) (err error) {
 
 	response, err := u.usersUseCase.Handle()
@@ -104,6 +108,7 @@ func (u *userController) Find(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, response)
 }
 
+// Find by id on database
 func (u *userController) FindById(c echo.Context) (err error) {
 	id := c.Param("id")
 	response, err := u.userUseCase.Handle(id)

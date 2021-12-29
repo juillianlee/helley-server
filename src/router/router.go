@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -29,11 +29,13 @@ func NewRouter(db *mongo.Database) *echo.Echo {
 
 	e.Validator = &Validator{validator: validator.New()}
 
-	userRoutes := routes.CreateUserRoutes(db)
-	websocketRoutes := routes.CreateWebsocketRoutes()
+	userRoutes := routes.NewUserRoutes(db)
+	loginRoutes := routes.NewLoginRoutes(db)
+	websocketRoutes := routes.NewWebsocketRoutes()
 
 	var routesHandle []config.Route
 	routesHandle = append(routesHandle, userRoutes...)
+	routesHandle = append(routesHandle, loginRoutes...)
 	routesHandle = append(routesHandle, websocketRoutes...)
 
 	for _, route := range routesHandle {

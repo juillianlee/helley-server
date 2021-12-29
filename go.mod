@@ -4,9 +4,10 @@ go 1.17
 
 require (
 	github.com/go-playground/validator/v10 v10.9.0
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/gorilla/websocket v1.4.2
 	github.com/joho/godotenv v1.4.0
-	github.com/labstack/echo/v4 v4.6.1
+	github.com/labstack/echo v3.3.10+incompatible
 	go.mongodb.org/mongo-driver v1.8.1
 )
 

@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func CreateUserRoutes(db *mongo.Database) []config.Route {
+func NewUserRoutes(db *mongo.Database) []config.Route {
 	userRepository := repository.NewUserRepository(db)
 	storeUserUseCase := usecase.NewStoreUserUseCase(userRepository)
 	userUpdateUseCase := usecase.NewUpdateUserUseCase(userRepository)
