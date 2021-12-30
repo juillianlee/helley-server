@@ -1,7 +1,7 @@
 package login
 
 import (
-	helper "app-helley/src/contract"
+	"app-helley/src/contract"
 	"app-helley/src/infrastructure/security"
 	"fmt"
 
@@ -10,7 +10,7 @@ import (
 
 type (
 	RefreshTokenUseCase interface {
-		Handle(refreshToken *helper.RefreshTokenRequest) (map[string]string, error)
+		Handle(refreshToken *contract.RefreshTokenRequest) (map[string]string, error)
 	}
 
 	refreshTokenUseCase struct {
@@ -24,7 +24,7 @@ func NewRefreshTokenUseCase(tokenService security.TokenManager) RefreshTokenUseC
 	}
 }
 
-func (r *refreshTokenUseCase) Handle(refreshToken *helper.RefreshTokenRequest) (map[string]string, error) {
+func (r *refreshTokenUseCase) Handle(refreshToken *contract.RefreshTokenRequest) (map[string]string, error) {
 
 	token, err := jwt.Parse(refreshToken.RefreshToken, func(token *jwt.Token) (interface{}, error) {
 

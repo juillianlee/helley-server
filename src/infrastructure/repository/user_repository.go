@@ -79,7 +79,7 @@ func (u *userRepository) Find() ([]domain.User, error) {
 	cur, err := u.collection.Find(context.Background(), bson.M{})
 
 	if err != nil {
-		return []domain.User{}, nil
+		return []domain.User{}, err
 	}
 
 	defer cur.Close(context.TODO())

@@ -1,13 +1,13 @@
 package user
 
 import (
-	helper "app-helley/src/contract"
+	"app-helley/src/contract"
 	"app-helley/src/domain"
 	"app-helley/src/infrastructure/repository"
 )
 
 type StoreUserUseCase interface {
-	Handle(storeUser *helper.StoreUserRequest) (helper.StoreUserResponse, error)
+	Handle(storeUser *contract.StoreUserRequest) (contract.StoreUserResponse, error)
 }
 
 type storeUserUseCase struct {
@@ -20,7 +20,7 @@ func NewStoreUserUseCase(userRepository repository.UserRepository) StoreUserUseC
 	}
 }
 
-func (usecase *storeUserUseCase) Handle(storeUser *helper.StoreUserRequest) (helper.StoreUserResponse, error) {
+func (usecase *storeUserUseCase) Handle(storeUser *contract.StoreUserRequest) (contract.StoreUserResponse, error) {
 	user := domain.User{
 		Name:     storeUser.Name,
 		Email:    storeUser.Email,
@@ -30,14 +30,14 @@ func (usecase *storeUserUseCase) Handle(storeUser *helper.StoreUserRequest) (hel
 	userInserted, err := usecase.userRepository.Store(user)
 
 	if err != nil {
-		return helper.StoreUserResponse{}, err
+		return contract.StoreUserResponse{}, err
 	}
 
-	response := helper.StoreUserResponse{
+	response := contract.StoreUserResponse{
 		ID:    userInserted.ID.Hex(),
 		Name:  userInserted.Name,
 		Email: user.Email,
 	}
 
-	return response, err
+	return response, nil
 }

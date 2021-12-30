@@ -2,6 +2,7 @@ package router
 
 import (
 	"app-helley/src/infrastructure/config"
+	"app-helley/src/infrastructure/http/errors"
 	"app-helley/src/infrastructure/http/router/routes"
 	"net/http"
 
@@ -28,6 +29,7 @@ func NewRouter(db *mongo.Database) *echo.Echo {
 	e := echo.New()
 
 	e.Validator = &Validator{validator: validator.New()}
+	e.HTTPErrorHandler = errors.ErrorHandler
 
 	userRoutes := routes.NewUserRoutes(db)
 	loginRoutes := routes.NewLoginRoutes(db)

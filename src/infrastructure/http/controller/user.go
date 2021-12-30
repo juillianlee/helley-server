@@ -102,7 +102,7 @@ func (u *userController) Find(c echo.Context) (err error) {
 	response, err := u.usersUseCase.Handle()
 
 	if err != nil {
-		return err
+		return c.JSON(http.StatusNotFound, err.Error())
 	}
 
 	return c.JSON(http.StatusOK, response)
