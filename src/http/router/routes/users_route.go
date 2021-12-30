@@ -2,7 +2,7 @@ package routes
 
 import (
 	"app-helley/src/config"
-	"app-helley/src/controller"
+	"app-helley/src/http/controller"
 	"app-helley/src/repository"
 	usecase "app-helley/src/usecase/user"
 	"net/http"

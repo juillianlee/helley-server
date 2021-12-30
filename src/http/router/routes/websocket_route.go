@@ -2,7 +2,7 @@ package routes
 
 import (
 	"app-helley/src/config"
-	hWebsocket "app-helley/src/websocket"
+	hWebsocket "app-helley/src/http/websocket"
 	"fmt"
 	"net/http"
 
