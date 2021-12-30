@@ -1,12 +1,12 @@
 package user
 
 import (
-	helper "app-helley/src/contract"
+	"app-helley/src/contract"
 	"app-helley/src/infrastructure/repository"
 )
 
 type UpdateUserUseCase interface {
-	Handle(id string, helper *helper.UpdateUserRequest) (helper.MessageResponse, error)
+	Handle(id string, contract *contract.UpdateUserRequest) (contract.MessageResponse, error)
 }
 
 type updateUseUseCase struct {
@@ -19,11 +19,11 @@ func NewUpdateUserUseCase(userRepository repository.UserRepository) UpdateUserUs
 	}
 }
 
-func (usecase *updateUseUseCase) Handle(id string, h *helper.UpdateUserRequest) (helper.MessageResponse, error) {
+func (usecase *updateUseUseCase) Handle(id string, h *contract.UpdateUserRequest) (contract.MessageResponse, error) {
 	user, err := usecase.userRepository.FindById(id)
 
 	if err != nil {
-		return helper.MessageResponse{}, err
+		return contract.MessageResponse{}, err
 	}
 
 	user.Name = h.Name
@@ -31,10 +31,10 @@ func (usecase *updateUseUseCase) Handle(id string, h *helper.UpdateUserRequest) 
 
 	err = usecase.userRepository.Update(user)
 	if err != nil {
-		return helper.MessageResponse{}, err
+		return contract.MessageResponse{}, err
 	}
 
-	return helper.MessageResponse{
+	return contract.MessageResponse{
 		Message: "Usuário atualizado com sucesso",
 	}, nil
 }
