@@ -1,8 +1,8 @@
 package router
 
 import (
-	"app-helley/src/config"
-	"app-helley/src/router/routes"
+	"app-helley/src/infrastructure/config"
+	"app-helley/src/infrastructure/http/router/routes"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"

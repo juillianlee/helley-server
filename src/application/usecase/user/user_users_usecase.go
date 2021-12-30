@@ -2,7 +2,7 @@ package user
 
 import (
 	"app-helley/src/helper"
-	"app-helley/src/repository"
+	"app-helley/src/infrastructure/repository"
 )
 
 type UsersUseCase interface {

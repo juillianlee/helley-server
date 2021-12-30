@@ -1,8 +1,8 @@
 package controller
 
 import (
+	usecase "app-helley/src/application/usecase/user"
 	"app-helley/src/helper"
-	usecase "app-helley/src/usecase/user"
 	"net/http"
 
 	"github.com/labstack/echo"

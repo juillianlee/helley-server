@@ -28,6 +28,7 @@ func LoadEnviorments() {
 	}
 	MONGO_URL = os.Getenv("MONGO_URL")
 	DATABASE = os.Getenv("DATABASE")
+	JWT_SECRET = os.Getenv("JWT_SECRET")
 
 	if MONGO_URL == "" {
 		log.Fatal("Envioriment MONGO_URL not defined")

@@ -1,17 +1,17 @@
 package routes
 
 import (
-	"app-helley/src/config"
-	"app-helley/src/http/controller"
-	"app-helley/src/service"
-	"app-helley/src/usecase/login"
+	"app-helley/src/application/usecase/login"
+	"app-helley/src/infrastructure/config"
+	"app-helley/src/infrastructure/http/controller"
+	"app-helley/src/infrastructure/security"
 	"net/http"
 
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func NewLoginRoutes(db *mongo.Database) []config.Route {
-	tokenService := service.NewTokenService(config.JWT_SECRET)
+	tokenService := security.NewTokenManager(config.JWT_SECRET)
 
 	loginUseCase := login.NewLoginUseCase(tokenService)
 	refreshTokenUseCase := login.NewRefreshTokenUseCase(tokenService)

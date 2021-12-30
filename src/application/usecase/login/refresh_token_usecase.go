@@ -2,7 +2,7 @@ package login
 
 import (
 	"app-helley/src/helper"
-	"app-helley/src/service"
+	"app-helley/src/infrastructure/security"
 	"fmt"
 
 	"github.com/golang-jwt/jwt"
@@ -14,11 +14,11 @@ type (
 	}
 
 	refreshTokenUseCase struct {
-		tokenService service.TokenService
+		tokenService security.TokenManager
 	}
 )
 
-func NewRefreshTokenUseCase(tokenService service.TokenService) RefreshTokenUseCase {
+func NewRefreshTokenUseCase(tokenService security.TokenManager) RefreshTokenUseCase {
 	return &refreshTokenUseCase{
 		tokenService: tokenService,
 	}

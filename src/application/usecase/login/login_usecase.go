@@ -1,7 +1,7 @@
 package login
 
 import (
-	"app-helley/src/service"
+	"app-helley/src/infrastructure/security"
 	"errors"
 )
 
@@ -10,10 +10,10 @@ type LoginUseCase interface {
 }
 
 type loginUseCase struct {
-	tokenService service.TokenService
+	tokenService security.TokenManager
 }
 
-func NewLoginUseCase(tokenService service.TokenService) LoginUseCase {
+func NewLoginUseCase(tokenService security.TokenManager) LoginUseCase {
 	return &loginUseCase{
 		tokenService: tokenService,
 	}

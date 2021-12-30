@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"app-helley/src/config"
-	hWebsocket "app-helley/src/http/websocket"
+	"app-helley/src/infrastructure/config"
+	hWebsocket "app-helley/src/infrastructure/http/websocket"
 	"fmt"
 	"net/http"
 

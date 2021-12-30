@@ -1,10 +1,10 @@
 package routes
 
 import (
-	"app-helley/src/config"
-	"app-helley/src/http/controller"
-	"app-helley/src/repository"
-	usecase "app-helley/src/usecase/user"
+	"app-helley/src/application/usecase/user"
+	"app-helley/src/infrastructure/config"
+	"app-helley/src/infrastructure/http/controller"
+	"app-helley/src/infrastructure/repository"
 	"net/http"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -12,11 +12,11 @@ import (
 
 func NewUserRoutes(db *mongo.Database) []config.Route {
 	userRepository := repository.NewUserRepository(db)
-	storeUserUseCase := usecase.NewStoreUserUseCase(userRepository)
-	userUpdateUseCase := usecase.NewUpdateUserUseCase(userRepository)
-	deleteUserUseCase := usecase.NewDeleteUserUseCase(userRepository)
-	usersUseCase := usecase.NewUsersUseCase(userRepository)
-	userUseCase := usecase.NewUserUseCase(userRepository)
+	storeUserUseCase := user.NewStoreUserUseCase(userRepository)
+	userUpdateUseCase := user.NewUpdateUserUseCase(userRepository)
+	deleteUserUseCase := user.NewDeleteUserUseCase(userRepository)
+	usersUseCase := user.NewUsersUseCase(userRepository)
+	userUseCase := user.NewUserUseCase(userRepository)
 	userController := controller.NewUserController(
 		storeUserUseCase,
 		userUpdateUseCase,

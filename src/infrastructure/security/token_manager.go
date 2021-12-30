@@ -1,4 +1,4 @@
-package service
+package security
 
 import (
 	"time"
@@ -7,24 +7,22 @@ import (
 )
 
 type (
-	TokenService interface {
+	TokenManager interface {
 		GenerateTokenPair() (map[string]string, error)
-		RefreshToken() (string, error)
-		AccessToken() (string, error)
 	}
 
-	tokenService struct {
+	tokenManager struct {
 		jwtSecret string
 	}
 )
 
-func NewTokenService(jwtSecret string) TokenService {
-	return &tokenService{
+func NewTokenManager(jwtSecret string) TokenManager {
+	return &tokenManager{
 		jwtSecret: jwtSecret,
 	}
 }
 
-func (s *tokenService) AccessToken() (string, error) {
+func (s *tokenManager) accessToken() (string, error) {
 	jwtRefreshToken := jwt.New(jwt.SigningMethodHS256)
 	rtClaims := jwtRefreshToken.Claims.(jwt.MapClaims)
 	rtClaims["sub"] = 1
@@ -38,7 +36,7 @@ func (s *tokenService) AccessToken() (string, error) {
 	return refreshToken, nil
 }
 
-func (s *tokenService) RefreshToken() (string, error) {
+func (s *tokenManager) refreshToken() (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	claims := token.Claims.(jwt.MapClaims)
@@ -55,14 +53,14 @@ func (s *tokenService) RefreshToken() (string, error) {
 	return accessToken, nil
 }
 
-func (s *tokenService) GenerateTokenPair() (map[string]string, error) {
-	accessToken, err := s.AccessToken()
+func (s *tokenManager) GenerateTokenPair() (map[string]string, error) {
+	accessToken, err := s.accessToken()
 
 	if err != nil {
 		return map[string]string{}, err
 	}
 
-	refreshToken, err := s.RefreshToken()
+	refreshToken, err := s.refreshToken()
 	if err != nil {
 		return map[string]string{}, err
 	}
