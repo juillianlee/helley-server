@@ -1,10 +1,8 @@
 package login
 
 import (
+	"app-helley/src/service"
 	"errors"
-	"time"
-
-	"github.com/golang-jwt/jwt"
 )
 
 type LoginUseCase interface {
@@ -12,30 +10,25 @@ type LoginUseCase interface {
 }
 
 type loginUseCase struct {
+	tokenService service.TokenService
 }
 
-func NewLoginUseCase() LoginUseCase {
-	return &loginUseCase{}
+func NewLoginUseCase(tokenService service.TokenService) LoginUseCase {
+	return &loginUseCase{
+		tokenService: tokenService,
+	}
 }
 
 func (h *loginUseCase) Handle(username string, password string) (map[string]string, error) {
 
 	if username == "juillian" && password == "abc123" {
-		token := jwt.New(jwt.SigningMethodHS256)
+		response, err := h.tokenService.GenerateTokenPair()
 
-		claims := token.Claims.(jwt.MapClaims)
-		claims["name"] = "Juillian Lee"
-		claims["admin"] = true
-		claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
-
-		t, err := token.SignedString([]byte("secret"))
 		if err != nil {
 			return map[string]string{}, err
 		}
 
-		return map[string]string{
-			"token": t,
-		}, nil
+		return response, nil
 
 	}
 

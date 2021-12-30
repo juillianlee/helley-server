@@ -9,9 +9,10 @@ import (
 )
 
 var (
-	MONGO_URL = ""
-	DATABASE  = ""
-	PORT      = 0
+	MONGO_URL  = ""
+	DATABASE   = ""
+	PORT       = 0
+	JWT_SECRET = ""
 )
 
 func LoadEnviorments() {
@@ -34,6 +35,10 @@ func LoadEnviorments() {
 
 	if DATABASE == "" {
 		log.Fatal("Envioriment DATABASE not defined")
+	}
+
+	if JWT_SECRET == "" {
+		log.Fatal("Envioriment JWT_SECRET not defined")
 	}
 
 }

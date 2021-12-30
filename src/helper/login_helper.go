@@ -5,4 +5,8 @@ type (
 		Username string
 		Password string
 	}
+
+	RefreshTokenRequest struct {
+		RefreshToken string
+	}
 )
