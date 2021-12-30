@@ -1,12 +1,12 @@
 package user
 
 import (
-	"app-helley/src/helper"
+	"app-helley/src/contract"
 	"app-helley/src/infrastructure/repository"
 )
 
 type UsersUseCase interface {
-	Handle() ([]helper.UserResponse, error)
+	Handle() ([]contract.UserResponse, error)
 }
 
 type usersUserCase struct {
@@ -19,18 +19,18 @@ func NewUsersUseCase(userRepository repository.UserRepository) UsersUseCase {
 	}
 }
 
-func (u *usersUserCase) Handle() ([]helper.UserResponse, error) {
+func (u *usersUserCase) Handle() ([]contract.UserResponse, error) {
 
 	users, err := u.userRepository.Find()
 
 	if err != nil {
-		return []helper.UserResponse{}, err
+		return []contract.UserResponse{}, err
 	}
 
-	var response []helper.UserResponse
+	var response []contract.UserResponse
 
 	for _, user := range users {
-		response = append(response, helper.UserResponse{
+		response = append(response, contract.UserResponse{
 			ID:    user.ID.Hex(),
 			Name:  user.Name,
 			Email: user.Email,

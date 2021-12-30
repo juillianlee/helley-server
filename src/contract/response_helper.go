@@ -1,4 +1,4 @@
-package helper
+package contract
 
 import (
 	"encoding/json"

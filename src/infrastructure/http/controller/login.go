@@ -2,7 +2,7 @@ package controller
 
 import (
 	"app-helley/src/application/usecase/login"
-	"app-helley/src/helper"
+	"app-helley/src/contract"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -27,7 +27,7 @@ func NewLoginController(loginUseCase login.LoginUseCase, refreshTokenUseCase log
 }
 
 func (controller *loginController) Login(c echo.Context) (err error) {
-	payload := new(helper.LoginRequest)
+	payload := new(contract.LoginRequest)
 
 	if err := c.Bind(payload); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
@@ -42,7 +42,7 @@ func (controller *loginController) Login(c echo.Context) (err error) {
 }
 
 func (controller *loginController) RefreshToken(c echo.Context) (err error) {
-	payload := new(helper.RefreshTokenRequest)
+	payload := new(contract.RefreshTokenRequest)
 
 	if err := c.Bind(payload); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())

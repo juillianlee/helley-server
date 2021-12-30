@@ -1,4 +1,4 @@
-package helper
+package contract
 
 type (
 	UserResponse struct {

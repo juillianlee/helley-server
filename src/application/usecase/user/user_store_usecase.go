@@ -1,8 +1,8 @@
 package user
 
 import (
+	helper "app-helley/src/contract"
 	"app-helley/src/domain"
-	"app-helley/src/helper"
 	"app-helley/src/infrastructure/repository"
 )
 

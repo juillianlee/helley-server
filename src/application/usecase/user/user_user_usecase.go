@@ -1,12 +1,12 @@
 package user
 
 import (
-	"app-helley/src/helper"
+	"app-helley/src/contract"
 	"app-helley/src/infrastructure/repository"
 )
 
 type UserUseCase interface {
-	Handle(id string) (helper.UserResponse, error)
+	Handle(id string) (contract.UserResponse, error)
 }
 
 type userUseCase struct {
@@ -19,14 +19,14 @@ func NewUserUseCase(userRepository repository.UserRepository) UserUseCase {
 	}
 }
 
-func (u *userUseCase) Handle(id string) (helper.UserResponse, error) {
+func (u *userUseCase) Handle(id string) (contract.UserResponse, error) {
 	user, err := u.userRepository.FindById(id)
 
 	if err != nil {
-		return helper.UserResponse{}, err
+		return contract.UserResponse{}, err
 	}
 
-	return helper.UserResponse{
+	return contract.UserResponse{
 		ID:    user.ID.Hex(),
 		Name:  user.Name,
 		Email: user.Email,
