@@ -1,6 +1,7 @@
-package repository
+package repository_mongo
 
 import (
+	app_repository "app-helley/src/application/repository"
 	"app-helley/src/domain"
 	"context"
 	"log"
@@ -11,19 +12,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type UserRepository interface {
-	Store(user domain.User) (domain.User, error)
-	DeleteById(id string) error
-	FindById(id string) (domain.User, error)
-	Update(user domain.User) error
-	Find() ([]domain.User, error)
-}
-
 type userRepository struct {
 	collection *mongo.Collection
 }
 
-func NewUserRepository(db *mongo.Database) UserRepository {
+func NewUserRepository(db *mongo.Database) app_repository.UserRepository {
 	return &userRepository{
 		collection: db.Collection("user"),
 	}

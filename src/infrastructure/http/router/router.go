@@ -2,34 +2,19 @@ package router
 
 import (
 	"app-helley/src/infrastructure/config"
-	"app-helley/src/infrastructure/http/errors"
 	"app-helley/src/infrastructure/http/router/routes"
+	"app-helley/src/infrastructure/http/setup"
 	"net/http"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo"
 	"go.mongodb.org/mongo-driver/mongo"
 )
-
-type Validator struct {
-	validator *validator.Validate
-}
-
-func (cv *Validator) Validate(i interface{}) error {
-	if err := cv.validator.Struct(i); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-	return nil
-}
 
 /**
 Generates new router to application with router configured
 */
 func NewRouter(db *mongo.Database) *echo.Echo {
-	e := echo.New()
-
-	e.Validator = &Validator{validator: validator.New()}
-	e.HTTPErrorHandler = errors.ErrorHandler
+	e := setup.SetupRouter()
 
 	userRoutes := routes.NewUserRoutes(db)
 	loginRoutes := routes.NewLoginRoutes(db)

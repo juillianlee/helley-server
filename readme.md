@@ -8,3 +8,5 @@ npm i -g npm
 nodemon --exec go run main.go --signal SIGTERM
 ```
 
+### Run Test
+nodemon --exec "go test -v ./..." --signal SIGTERM

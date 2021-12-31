@@ -1,8 +1,8 @@
 package user
 
 import (
+	app_repository "app-helley/src/application/repository"
 	"app-helley/src/contract"
-	"app-helley/src/infrastructure/repository"
 )
 
 type UpdateUserUseCase interface {
@@ -10,10 +10,10 @@ type UpdateUserUseCase interface {
 }
 
 type updateUseUseCase struct {
-	userRepository repository.UserRepository
+	userRepository app_repository.UserRepository
 }
 
-func NewUpdateUserUseCase(userRepository repository.UserRepository) UpdateUserUseCase {
+func NewUpdateUserUseCase(userRepository app_repository.UserRepository) UpdateUserUseCase {
 	return &updateUseUseCase{
 		userRepository: userRepository,
 	}

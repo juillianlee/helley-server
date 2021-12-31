@@ -4,14 +4,14 @@ import (
 	"app-helley/src/application/usecase/user"
 	"app-helley/src/infrastructure/config"
 	"app-helley/src/infrastructure/http/controller"
-	"app-helley/src/infrastructure/repository"
+	repository_mongo "app-helley/src/infrastructure/repository/mongo"
 	"net/http"
 
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func NewUserRoutes(db *mongo.Database) []config.Route {
-	userRepository := repository.NewUserRepository(db)
+	userRepository := repository_mongo.NewUserRepository(db)
 	storeUserUseCase := user.NewStoreUserUseCase(userRepository)
 	userUpdateUseCase := user.NewUpdateUserUseCase(userRepository)
 	deleteUserUseCase := user.NewDeleteUserUseCase(userRepository)

@@ -1,8 +1,8 @@
 package user
 
 import (
+	app_repository "app-helley/src/application/repository"
 	"app-helley/src/contract"
-	"app-helley/src/infrastructure/repository"
 )
 
 type DeleteUserUseCase interface {
@@ -10,10 +10,10 @@ type DeleteUserUseCase interface {
 }
 
 type deleteUserUseCase struct {
-	userRepository repository.UserRepository
+	userRepository app_repository.UserRepository
 }
 
-func NewDeleteUserUseCase(userRepository repository.UserRepository) DeleteUserUseCase {
+func NewDeleteUserUseCase(userRepository app_repository.UserRepository) DeleteUserUseCase {
 	return &deleteUserUseCase{
 		userRepository: userRepository,
 	}

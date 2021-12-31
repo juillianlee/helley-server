@@ -11,10 +11,10 @@ import (
 )
 
 func NewLoginRoutes(db *mongo.Database) []config.Route {
-	tokenService := security.NewTokenManager(config.JWT_SECRET)
+	tokenManager := security.NewTokenManager(config.JWT_SECRET)
 
-	loginUseCase := login.NewLoginUseCase(tokenService)
-	refreshTokenUseCase := login.NewRefreshTokenUseCase(tokenService)
+	loginUseCase := login.NewLoginUseCase(tokenManager)
+	refreshTokenUseCase := login.NewRefreshTokenUseCase(tokenManager)
 	handler := controller.NewLoginController(loginUseCase, refreshTokenUseCase)
 
 	return makeLoginRoutes(handler)
