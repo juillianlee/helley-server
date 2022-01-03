@@ -27,7 +27,7 @@ func (u *userUseCase) Handle(id string) (presentation.UserResponse, error) {
 	}
 
 	return presentation.UserResponse{
-		ID:    user.ID.Hex(),
+		ID:    user.ID,
 		Name:  user.Name,
 		Email: user.Email,
 	}, nil

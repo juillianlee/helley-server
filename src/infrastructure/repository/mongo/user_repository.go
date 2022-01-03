@@ -3,6 +3,7 @@ package repository_mongo
 import (
 	app_repository "app-helley/src/application/repository"
 	"app-helley/src/domain"
+	mongo_model "app-helley/src/infrastructure/repository/mongo/model"
 	"context"
 	"log"
 	"time"
@@ -26,7 +27,11 @@ func (u *userRepository) Store(user domain.User) (domain.User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
-	result, err := u.collection.InsertOne(ctx, user)
+	result, err := u.collection.InsertOne(ctx, mongo_model.User{
+		Name:     user.Name,
+		Email:    user.Email,
+		Password: user.Password,
+	})
 
 	if mongo.IsDuplicateKeyError(err) {
 		return user, WrapError(err)
@@ -36,7 +41,7 @@ func (u *userRepository) Store(user domain.User) (domain.User, error) {
 		return user, WrapError(err)
 	}
 
-	user.ID = result.InsertedID.(primitive.ObjectID)
+	user.ID = result.InsertedID.(primitive.ObjectID).Hex()
 
 	return user, err
 }
@@ -50,14 +55,19 @@ func (u *userRepository) FindById(id string) (domain.User, error) {
 
 	result := u.collection.FindOne(context.Background(), bson.M{"_id": objectId})
 
-	var user = domain.User{}
-	err = result.Decode(&user)
+	var model = mongo_model.User{}
+	err = result.Decode(&model)
 
 	if err != nil {
-		return user, WrapError(err)
+		return domain.User{}, WrapError(err)
 	}
 
-	return user, nil
+	return domain.User{
+		ID:       model.ID.Hex(),
+		Name:     model.Name,
+		Email:    model.Email,
+		Password: model.Password,
+	}, nil
 
 }
 
@@ -79,7 +89,19 @@ func (u *userRepository) DeleteById(id string) error {
 }
 
 func (u *userRepository) Update(user domain.User) error {
-	_, err := u.collection.UpdateByID(context.Background(), user.ID, user)
+	ID, err := primitive.ObjectIDFromHex(user.ID)
+	if err != nil {
+		return WrapError(err)
+	}
+
+	model := mongo_model.User{
+		ID:       ID,
+		Name:     user.Name,
+		Email:    user.Email,
+		Password: user.Password,
+	}
+
+	_, err = u.collection.UpdateByID(context.Background(), model.ID, model)
 	if err != nil {
 		return WrapError(err)
 	}
@@ -97,14 +119,19 @@ func (u *userRepository) Find() ([]domain.User, error) {
 
 	var users []domain.User
 	for cur.Next(context.TODO()) {
-		var user domain.User
+		var model mongo_model.User
 
-		if err := cur.Decode(&user); err != nil {
+		if err := cur.Decode(&model); err != nil {
 			log.Println(err.Error())
 			continue
 		}
 
-		users = append(users, user)
+		users = append(users, domain.User{
+			ID:       model.ID.Hex(),
+			Name:     model.Name,
+			Email:    model.Email,
+			Password: model.Password,
+		})
 	}
 
 	err = cur.Err()

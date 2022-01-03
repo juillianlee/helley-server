@@ -34,7 +34,7 @@ func (usecase *storeUserUseCase) Handle(storeUser *presentation.StoreUserRequest
 	}
 
 	response := presentation.StoreUserResponse{
-		ID:    userInserted.ID.Hex(),
+		ID:    userInserted.ID,
 		Name:  userInserted.Name,
 		Email: user.Email,
 	}

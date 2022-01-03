@@ -31,7 +31,7 @@ func (u *usersUserCase) Handle() ([]presentation.UserResponse, error) {
 
 	for _, user := range users {
 		response = append(response, presentation.UserResponse{
-			ID:    user.ID.Hex(),
+			ID:    user.ID,
 			Name:  user.Name,
 			Email: user.Email,
 		})
