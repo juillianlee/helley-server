@@ -2,11 +2,11 @@ package user
 
 import (
 	app_repository "app-helley/src/application/repository"
-	"app-helley/src/contract"
+	"app-helley/src/presentation"
 )
 
 type DeleteUserUseCase interface {
-	Handle(id string) (contract.MessageResponse, error)
+	Handle(id string) (presentation.MessageResponse, error)
 }
 
 type deleteUserUseCase struct {
@@ -19,12 +19,12 @@ func NewDeleteUserUseCase(userRepository app_repository.UserRepository) DeleteUs
 	}
 }
 
-func (u *deleteUserUseCase) Handle(id string) (contract.MessageResponse, error) {
+func (u *deleteUserUseCase) Handle(id string) (presentation.MessageResponse, error) {
 	if err := u.userRepository.DeleteById(id); err != nil {
-		return contract.MessageResponse{}, err
+		return presentation.MessageResponse{}, err
 	}
 
-	return contract.MessageResponse{
+	return presentation.MessageResponse{
 		Message: "Usuário deletado com sucesso",
 	}, nil
 }

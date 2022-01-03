@@ -1,8 +1,8 @@
 package login
 
 import (
-	"app-helley/src/contract"
 	"app-helley/src/infrastructure/security"
+	"app-helley/src/presentation"
 	"fmt"
 
 	"github.com/golang-jwt/jwt"
@@ -10,7 +10,7 @@ import (
 
 type (
 	RefreshTokenUseCase interface {
-		Handle(refreshToken *contract.RefreshTokenRequest) (map[string]string, error)
+		Handle(refreshToken *presentation.RefreshTokenRequest) (map[string]string, error)
 	}
 
 	refreshTokenUseCase struct {
@@ -24,7 +24,7 @@ func NewRefreshTokenUseCase(tokenService security.TokenManager) RefreshTokenUseC
 	}
 }
 
-func (r *refreshTokenUseCase) Handle(refreshToken *contract.RefreshTokenRequest) (map[string]string, error) {
+func (r *refreshTokenUseCase) Handle(refreshToken *presentation.RefreshTokenRequest) (map[string]string, error) {
 
 	token, err := jwt.Parse(refreshToken.RefreshToken, func(token *jwt.Token) (interface{}, error) {
 

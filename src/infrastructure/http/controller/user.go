@@ -2,7 +2,7 @@ package controller
 
 import (
 	usecase "app-helley/src/application/usecase/user"
-	"app-helley/src/contract"
+	"app-helley/src/presentation"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -42,7 +42,7 @@ func NewUserController(
 
 // Create new user on database
 func (u *userController) Store(c echo.Context) (err error) {
-	storeUser := new(contract.StoreUserRequest)
+	storeUser := new(presentation.StoreUserRequest)
 	if err := c.Bind(storeUser); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
@@ -62,7 +62,7 @@ func (u *userController) Store(c echo.Context) (err error) {
 
 // Update user on database
 func (u *userController) Update(c echo.Context) (err error) {
-	userUpdate := new(contract.UpdateUserRequest)
+	userUpdate := new(presentation.UpdateUserRequest)
 
 	if err := c.Bind(userUpdate); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())

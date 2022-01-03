@@ -1,4 +1,4 @@
-package contract
+package presentation
 
 type (
 	MessageResponse struct {
