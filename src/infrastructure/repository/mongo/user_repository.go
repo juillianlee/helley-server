@@ -17,12 +17,16 @@ type userRepository struct {
 	collection *mongo.Collection
 }
 
+// Create a repository using mongodb as a data storage
 func NewUserRepository(db *mongo.Database) app_repository.UserRepository {
 	return &userRepository{
 		collection: db.Collection("user"),
 	}
 }
 
+/**
+Store user on database mongodb
+*/
 func (u *userRepository) Store(user domain.User) (domain.User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
@@ -46,6 +50,7 @@ func (u *userRepository) Store(user domain.User) (domain.User, error) {
 	return user, err
 }
 
+// Find user by ID on database mongodb
 func (u *userRepository) FindById(id string) (domain.User, error) {
 	objectId, err := primitive.ObjectIDFromHex(id)
 
@@ -71,6 +76,7 @@ func (u *userRepository) FindById(id string) (domain.User, error) {
 
 }
 
+// Delete user by ID on database mongodb
 func (u *userRepository) DeleteById(id string) error {
 
 	objectId, err := primitive.ObjectIDFromHex(id)
@@ -88,6 +94,7 @@ func (u *userRepository) DeleteById(id string) error {
 	return nil
 }
 
+// Update user on database mongodb
 func (u *userRepository) Update(user domain.User) error {
 	ID, err := primitive.ObjectIDFromHex(user.ID)
 	if err != nil {
@@ -108,6 +115,7 @@ func (u *userRepository) Update(user domain.User) error {
 	return nil
 }
 
+// Find all users on database mongodb
 func (u *userRepository) Find() ([]domain.User, error) {
 	cur, err := u.collection.Find(context.Background(), bson.M{})
 
