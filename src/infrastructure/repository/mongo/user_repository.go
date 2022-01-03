@@ -27,8 +27,13 @@ func (u *userRepository) Store(user domain.User) (domain.User, error) {
 	defer cancel()
 
 	result, err := u.collection.InsertOne(ctx, user)
+
+	if mongo.IsDuplicateKeyError(err) {
+		return user, WrapError(err)
+	}
+
 	if err != nil {
-		return domain.User{}, err
+		return user, WrapError(err)
 	}
 
 	user.ID = result.InsertedID.(primitive.ObjectID)
@@ -40,13 +45,19 @@ func (u *userRepository) FindById(id string) (domain.User, error) {
 	objectId, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
-		return domain.User{}, err
+		return domain.User{}, WrapError(err)
 	}
 
 	result := u.collection.FindOne(context.Background(), bson.M{"_id": objectId})
+
 	var user = domain.User{}
 	err = result.Decode(&user)
-	return user, err
+
+	if err != nil {
+		return user, WrapError(err)
+	}
+
+	return user, nil
 
 }
 
@@ -55,24 +66,31 @@ func (u *userRepository) DeleteById(id string) error {
 	objectId, err := primitive.ObjectIDFromHex(id)
 
 	if err != nil {
-		return err
+		return WrapError(err)
 	}
 
 	_, err = u.collection.DeleteOne(context.Background(), bson.M{"_id": objectId})
 
-	return err
+	if err != nil {
+		return WrapError(err)
+	}
+
+	return nil
 }
 
 func (u *userRepository) Update(user domain.User) error {
 	_, err := u.collection.UpdateByID(context.Background(), user.ID, user)
-	return err
+	if err != nil {
+		return WrapError(err)
+	}
+	return nil
 }
 
 func (u *userRepository) Find() ([]domain.User, error) {
 	cur, err := u.collection.Find(context.Background(), bson.M{})
 
 	if err != nil {
-		return []domain.User{}, err
+		return []domain.User{}, WrapError(err)
 	}
 
 	defer cur.Close(context.TODO())

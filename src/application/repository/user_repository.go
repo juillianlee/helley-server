@@ -1,6 +1,8 @@
 package app_repository
 
-import "app-helley/src/domain"
+import (
+	"app-helley/src/domain"
+)
 
 type UserRepository interface {
 	Store(user domain.User) (domain.User, error)

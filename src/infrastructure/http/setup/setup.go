@@ -1,7 +1,6 @@
 package setup
 
 import (
-	"app-helley/src/infrastructure/http/errors"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -23,7 +22,7 @@ func SetupRouter() *echo.Echo {
 	e := echo.New()
 
 	e.Validator = &Validator{validator: validator.New()}
-	e.HTTPErrorHandler = errors.ErrorHandler
+	e.HTTPErrorHandler = HTTPErrorHandler
 
 	return e
 }
