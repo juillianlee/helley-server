@@ -1,8 +1,8 @@
 package main
 
 import (
-	"app-helley/src/infrastructure/config"
-	"app-helley/src/infrastructure/http/router"
+	"app-helley/src/infra/config"
+	"app-helley/src/infra/http/router"
 	"fmt"
 )
 
