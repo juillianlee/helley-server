@@ -2,11 +2,16 @@ package user
 
 import (
 	app_repository "app-helley/src/app/repository"
-	"app-helley/src/presentation"
+	domain_user "app-helley/src/domain/user"
 )
 
+type UpdateUserModel struct {
+	Name  string
+	Email string
+}
+
 type UpdateUserUseCase interface {
-	Handle(id string, presentation *presentation.UpdateUserRequest) (presentation.MessageResponse, error)
+	Handle(id string, presentation UpdateUserModel) (domain_user.User, error)
 }
 
 type updateUseUseCase struct {
@@ -19,22 +24,17 @@ func NewUpdateUserUseCase(userRepository app_repository.UserRepository) UpdateUs
 	}
 }
 
-func (usecase *updateUseUseCase) Handle(id string, h *presentation.UpdateUserRequest) (presentation.MessageResponse, error) {
+func (usecase *updateUseUseCase) Handle(id string, h UpdateUserModel) (domain_user.User, error) {
 	user, err := usecase.userRepository.FindById(id)
 
 	if err != nil {
-		return presentation.MessageResponse{}, err
+		return domain_user.User{}, err
 	}
 
 	user.Name = h.Name
 	user.Email = h.Email
 
 	err = usecase.userRepository.Update(user)
-	if err != nil {
-		return presentation.MessageResponse{}, err
-	}
 
-	return presentation.MessageResponse{
-		Message: "Usuário atualizado com sucesso",
-	}, nil
+	return user, err
 }

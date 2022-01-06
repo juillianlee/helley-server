@@ -3,7 +3,7 @@ package controller_user
 import (
 	"app-helley/src/app/usecase/user"
 	"app-helley/src/infra/http/controller"
-	"app-helley/src/presentation"
+	"app-helley/src/infra/http/dto"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -20,7 +20,7 @@ func NewUpdateUserController(usecase user.UpdateUserUseCase) controller.Handler 
 }
 
 func (h *updateUserController) Handle(c echo.Context) error {
-	userUpdate := new(presentation.UpdateUserRequest)
+	userUpdate := new(dto.UpdateUserRequest)
 
 	if err := c.Bind(userUpdate); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
@@ -32,7 +32,10 @@ func (h *updateUserController) Handle(c echo.Context) error {
 
 	id := c.Param("id")
 
-	response, err := h.usecase.Handle(id, userUpdate)
+	response, err := h.usecase.Handle(id, user.UpdateUserModel{
+		Name:  userUpdate.Name,
+		Email: userUpdate.Email,
+	})
 
 	if err != nil {
 		return err

@@ -3,11 +3,16 @@ package user
 import (
 	app_repository "app-helley/src/app/repository"
 	domain_user "app-helley/src/domain/user"
-	"app-helley/src/presentation"
 )
 
+type StoreUserModel struct {
+	Name     string
+	Email    string
+	Password string
+}
+
 type StoreUserUseCase interface {
-	Handle(storeUser *presentation.StoreUserRequest) (presentation.StoreUserResponse, error)
+	Handle(storeUser StoreUserModel) (domain_user.User, error)
 }
 
 type storeUserUseCase struct {
@@ -20,24 +25,11 @@ func NewStoreUserUseCase(userRepository app_repository.UserRepository) StoreUser
 	}
 }
 
-func (usecase *storeUserUseCase) Handle(storeUser *presentation.StoreUserRequest) (presentation.StoreUserResponse, error) {
-	user := domain_user.User{
+func (usecase *storeUserUseCase) Handle(storeUser StoreUserModel) (domain_user.User, error) {
+	return usecase.userRepository.Store(domain_user.User{
 		Name:     storeUser.Name,
 		Email:    storeUser.Email,
 		Password: storeUser.Password,
-	}
+	})
 
-	userInserted, err := usecase.userRepository.Store(user)
-
-	if err != nil {
-		return presentation.StoreUserResponse{}, err
-	}
-
-	response := presentation.StoreUserResponse{
-		ID:    userInserted.ID,
-		Name:  userInserted.Name,
-		Email: user.Email,
-	}
-
-	return response, nil
 }

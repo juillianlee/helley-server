@@ -3,6 +3,7 @@ package controller_user
 import (
 	"app-helley/src/app/usecase/user"
 	"app-helley/src/infra/http/controller"
+	"app-helley/src/infra/http/dto"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -21,11 +22,13 @@ func NewDeleteUserByIdController(usecase user.DeleteUserUseCase) controller.Hand
 func (h *deleteUserByIdController) Handle(c echo.Context) error {
 	id := c.Param("id")
 
-	response, err := h.usecase.Handle(id)
+	err := h.usecase.Handle(id)
 
 	if err != nil {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, response)
+	return c.JSON(http.StatusOK, dto.MessageResponse{
+		Message: "Usuário deletado com sucesso",
+	})
 }

@@ -1,4 +1,4 @@
-package presentation
+package dto
 
 type (
 	LoginRequest struct {

@@ -32,9 +32,11 @@ func (u *userRepository) Store(user domain_user.User) (domain_user.User, error) 
 	defer cancel()
 
 	result, err := u.collection.InsertOne(ctx, mongo_model.User{
-		Name:     user.Name,
-		Email:    user.Email,
-		Password: user.Password,
+		Name:      user.Name,
+		Email:     user.Email,
+		Password:  user.Password,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdateAt,
 	})
 
 	if mongo.IsDuplicateKeyError(err) {

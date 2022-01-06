@@ -1,37 +1,35 @@
 package login
 
-// TODO remover a infra daqui para ficar somente cadama de dominio aqui.
 import (
 	app_security "app-helley/src/app/security"
-	"errors"
 )
 
 type LoginUseCase interface {
-	Handle(username string, password string) (map[string]string, error)
+	Handle(username string, password string) (app_security.TokenPayload, error)
 }
 
 type loginUseCase struct {
-	tokenService app_security.TokenManager
+	tokenManager app_security.TokenManager
 }
 
 func NewLoginUseCase(tokenService app_security.TokenManager) LoginUseCase {
 	return &loginUseCase{
-		tokenService: tokenService,
+		tokenManager: tokenService,
 	}
 }
 
-func (h *loginUseCase) Handle(username string, password string) (map[string]string, error) {
+func (h *loginUseCase) Handle(username string, password string) (app_security.TokenPayload, error) {
 
 	if username == "juillian" && password == "abc123" {
-		response, err := h.tokenService.GenerateTokenPair()
+		response, err := h.tokenManager.GenerateTokenPair()
 
 		if err != nil {
-			return map[string]string{}, err
+			return app_security.TokenPayload{}, err
 		}
 
 		return response, nil
 
 	}
 
-	return nil, errors.New("ErrUnauthorized")
+	return app_security.TokenPayload{}, app_security.ErrUnauthorized
 }

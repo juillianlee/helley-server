@@ -2,11 +2,11 @@ package user
 
 import (
 	app_repository "app-helley/src/app/repository"
-	"app-helley/src/presentation"
+	domain_user "app-helley/src/domain/user"
 )
 
 type UserUseCase interface {
-	Handle(id string) (presentation.UserResponse, error)
+	Handle(id string) (domain_user.User, error)
 }
 
 type userUseCase struct {
@@ -19,17 +19,8 @@ func NewUserUseCase(userRepository app_repository.UserRepository) UserUseCase {
 	}
 }
 
-func (u *userUseCase) Handle(id string) (presentation.UserResponse, error) {
+func (u *userUseCase) Handle(id string) (domain_user.User, error) {
 	user, err := u.userRepository.FindById(id)
-
-	if err != nil {
-		return presentation.UserResponse{}, err
-	}
-
-	return presentation.UserResponse{
-		ID:    user.ID,
-		Name:  user.Name,
-		Email: user.Email,
-	}, nil
+	return user, err
 
 }

@@ -3,7 +3,7 @@ package controller_account
 import (
 	"app-helley/src/app/usecase/login"
 	"app-helley/src/infra/http/controller"
-	"app-helley/src/presentation"
+	"app-helley/src/infra/http/dto"
 	"net/http"
 
 	"github.com/labstack/echo"
@@ -20,13 +20,13 @@ func NewRefreshTokenController(refreshTokenUseCase login.RefreshTokenUseCase) co
 }
 
 func (h *refreshTokenController) Handle(c echo.Context) (err error) {
-	payload := new(presentation.RefreshTokenRequest)
+	payload := new(dto.RefreshTokenRequest)
 
 	if err := c.Bind(payload); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	response, err := h.refreshTokenUseCase.Handle(payload)
+	response, err := h.refreshTokenUseCase.Handle(payload.RefreshToken)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())

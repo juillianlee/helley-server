@@ -19,21 +19,21 @@ func NewTokenManager(jwtSecret string) app_security.TokenManager {
 	}
 }
 
-func (s *tokenManager) GenerateTokenPair() (map[string]string, error) {
+func (s *tokenManager) GenerateTokenPair() (app_security.TokenPayload, error) {
 	accessToken, err := s.accessToken()
 
 	if err != nil {
-		return map[string]string{}, err
+		return app_security.TokenPayload{}, err
 	}
 
 	refreshToken, err := s.refreshToken()
 	if err != nil {
-		return map[string]string{}, err
+		return app_security.TokenPayload{}, err
 	}
 
-	return map[string]string{
-		"access_token":  accessToken,
-		"refresh_token": refreshToken,
+	return app_security.TokenPayload{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
 	}, nil
 }
 
@@ -66,4 +66,23 @@ func (s *tokenManager) refreshToken() (string, error) {
 	}
 
 	return accessToken, nil
+}
+
+func (s *tokenManager) RefreshToken(refreshToken string) (app_security.TokenPayload, error) {
+	token, err := jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {
+
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, app_security.ErrUnexpectedSignin
+		}
+
+		return []byte("secret"), nil
+	})
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		if int(claims["sub"].(float64)) == 1 {
+			return s.GenerateTokenPair()
+		}
+	}
+
+	return app_security.TokenPayload{}, err
 }

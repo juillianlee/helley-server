@@ -1,6 +1,7 @@
 package controller_account
 
 import (
+	app_security "app-helley/src/app/security"
 	"app-helley/src/app/usecase/login"
 	"app-helley/src/infra/http/setup"
 	"app-helley/src/infra/security"
@@ -29,10 +30,10 @@ func TestLoginSucessfuly(t *testing.T) {
 	if assert.NoError(t, handler.Handle(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
 
-		var result map[string]interface{}
+		var result app_security.TokenPayload
 		json.Unmarshal(rec.Body.Bytes(), &result)
-		assert.Contains(t, result, "access_token")
-		assert.Contains(t, result, "refresh_token")
+		assert.NotEmpty(t, result.AccessToken)
+		assert.NotEmpty(t, result.RefreshToken)
 	}
 }
 
@@ -49,10 +50,10 @@ func TestLoginFail(t *testing.T) {
 	if assert.NoError(t, handler.Handle(c)) {
 		assert.Equal(t, http.StatusBadRequest, rec.Code)
 
-		var result map[string]interface{}
+		var result app_security.TokenPayload
 		json.Unmarshal(rec.Body.Bytes(), &result)
-		assert.NotContains(t, result, "access_token")
-		assert.NotContains(t, result, "refresh_token")
+		assert.Empty(t, result.AccessToken)
+		assert.Empty(t, result.RefreshToken)
 	}
 }
 
@@ -69,9 +70,9 @@ func TestLoginEmptyBody(t *testing.T) {
 	if assert.NoError(t, handler.Handle(c)) {
 		assert.Equal(t, http.StatusBadRequest, rec.Code)
 
-		var result map[string]interface{}
+		var result app_security.TokenPayload
 		json.Unmarshal(rec.Body.Bytes(), &result)
-		assert.NotContains(t, result, "access_token")
-		assert.NotContains(t, result, "refresh_token")
+		assert.Empty(t, result.AccessToken)
+		assert.Empty(t, result.RefreshToken)
 	}
 }
