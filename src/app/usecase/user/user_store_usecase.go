@@ -26,10 +26,16 @@ func NewStoreUserUseCase(userRepository app_repository.UserRepository) StoreUser
 }
 
 func (usecase *storeUserUseCase) Handle(storeUser StoreUserModel) (domain_user.User, error) {
-	return usecase.userRepository.Store(domain_user.User{
+	user := domain_user.User{
 		Name:     storeUser.Name,
 		Email:    storeUser.Email,
 		Password: storeUser.Password,
-	})
+	}
+
+	if err := user.Validate(); err != nil {
+		return user, nil
+	}
+
+	return usecase.userRepository.Store(user)
 
 }

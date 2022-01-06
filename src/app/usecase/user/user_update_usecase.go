@@ -24,15 +24,19 @@ func NewUpdateUserUseCase(userRepository app_repository.UserRepository) UpdateUs
 	}
 }
 
-func (usecase *updateUseUseCase) Handle(id string, h UpdateUserModel) (domain_user.User, error) {
+func (usecase *updateUseUseCase) Handle(id string, u UpdateUserModel) (domain_user.User, error) {
 	user, err := usecase.userRepository.FindById(id)
 
 	if err != nil {
 		return domain_user.User{}, err
 	}
 
-	user.Name = h.Name
-	user.Email = h.Email
+	user.Name = u.Name
+	user.Email = u.Email
+
+	if err = user.Validate(); err != nil {
+		return user, nil
+	}
 
 	err = usecase.userRepository.Update(user)
 

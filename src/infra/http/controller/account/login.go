@@ -28,7 +28,10 @@ func (h *loginController) Handle(c echo.Context) (err error) {
 
 	response, err := h.usecase.Handle(payload.Username, payload.Password)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, response)
+		return c.JSON(http.StatusBadRequest, dto.TokenResponse{
+			AccessToken:  response.AccessToken,
+			RefreshToken: response.RefreshToken,
+		})
 	}
 
 	return c.JSON(http.StatusOK, response)
