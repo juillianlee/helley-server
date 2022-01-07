@@ -3,6 +3,7 @@ package controller_account
 import (
 	app_security "app-helley/src/app/security"
 	"app-helley/src/app/usecase/login"
+	usecase "app-helley/src/app/usecase/user"
 	"app-helley/src/infra/http/setup"
 	repository_memory "app-helley/src/infra/repository/memory"
 	"app-helley/src/infra/security"
@@ -16,16 +17,27 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func testStoreUser(userRepository *repository_memory.UserRepository) {
+	store := usecase.NewStoreUserUseCase(userRepository)
+	store.Handle(usecase.StoreUserModel{
+		Name:     "Juillian Lee",
+		Email:    "juillian.lee@gmail.com",
+		Password: "abc123",
+	})
+}
+
 func TestLoginSucessfuly(t *testing.T) {
 	e := setup.SetupRouter()
 
-	req := httptest.NewRequest(http.MethodPost, "/login", strings.NewReader(`{"username": "juillian", "password": "abc123"}`))
+	userRepository := &repository_memory.UserRepository{}
+	testStoreUser(userRepository)
+
+	req := httptest.NewRequest(http.MethodPost, "/login", strings.NewReader(`{"username": "juillian.lee@gmail.com", "password": "abc123"}`))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 
 	tokenManager := security.NewTokenManager("secret")
-	userRepository := repository_memory.NewRepositoryMemory()
 
 	loginUseCase := login.NewLoginUseCase(tokenManager, userRepository)
 	handler := NewLoginController(loginUseCase)
@@ -47,8 +59,7 @@ func TestLoginFail(t *testing.T) {
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	tokenManager := security.NewTokenManager("secret")
-	userRepository := repository_memory.NewRepositoryMemory()
-	loginUseCase := login.NewLoginUseCase(tokenManager, userRepository)
+	loginUseCase := login.NewLoginUseCase(tokenManager, &repository_memory.UserRepository{})
 
 	handler := NewLoginController(loginUseCase)
 
@@ -69,8 +80,7 @@ func TestLoginEmptyBody(t *testing.T) {
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	tokenManager := security.NewTokenManager("secret")
-	userRepository := repository_memory.NewRepositoryMemory()
-	loginUseCase := login.NewLoginUseCase(tokenManager, userRepository)
+	loginUseCase := login.NewLoginUseCase(tokenManager, &repository_memory.UserRepository{})
 	handler := NewLoginController(loginUseCase)
 
 	if assert.NoError(t, handler.Handle(c)) {
