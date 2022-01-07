@@ -4,6 +4,7 @@ import (
 	app_security "app-helley/src/app/security"
 	"app-helley/src/app/usecase/login"
 	"app-helley/src/infra/http/setup"
+	repository_memory "app-helley/src/infra/repository/memory"
 	"app-helley/src/infra/security"
 	"encoding/json"
 	"net/http"
@@ -24,7 +25,9 @@ func TestLoginSucessfuly(t *testing.T) {
 	c := e.NewContext(req, rec)
 
 	tokenManager := security.NewTokenManager("secret")
-	loginUseCase := login.NewLoginUseCase(tokenManager)
+	userRepository := repository_memory.NewRepositoryMemory()
+
+	loginUseCase := login.NewLoginUseCase(tokenManager, userRepository)
 	handler := NewLoginController(loginUseCase)
 
 	if assert.NoError(t, handler.Handle(c)) {
@@ -44,7 +47,9 @@ func TestLoginFail(t *testing.T) {
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	tokenManager := security.NewTokenManager("secret")
-	loginUseCase := login.NewLoginUseCase(tokenManager)
+	userRepository := repository_memory.NewRepositoryMemory()
+	loginUseCase := login.NewLoginUseCase(tokenManager, userRepository)
+
 	handler := NewLoginController(loginUseCase)
 
 	if assert.NoError(t, handler.Handle(c)) {
@@ -64,7 +69,8 @@ func TestLoginEmptyBody(t *testing.T) {
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	tokenManager := security.NewTokenManager("secret")
-	loginUseCase := login.NewLoginUseCase(tokenManager)
+	userRepository := repository_memory.NewRepositoryMemory()
+	loginUseCase := login.NewLoginUseCase(tokenManager, userRepository)
 	handler := NewLoginController(loginUseCase)
 
 	if assert.NoError(t, handler.Handle(c)) {

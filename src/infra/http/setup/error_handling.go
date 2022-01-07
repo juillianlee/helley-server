@@ -3,6 +3,7 @@ package setup
 import (
 	app_repository "app-helley/src/app/repository"
 	"app-helley/src/infra/http/dto"
+	"fmt"
 	"net/http"
 
 	"errors"
@@ -11,7 +12,7 @@ import (
 )
 
 func HTTPErrorHandler(err error, c echo.Context) {
-
+	fmt.Println("oi")
 	switch {
 	case errors.Is(err, app_repository.ErrNoResults):
 		c.JSON(http.StatusNotFound, dto.ErrorResponse{Message: err.Error(), StatusCode: http.StatusNotFound})

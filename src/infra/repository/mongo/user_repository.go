@@ -149,3 +149,21 @@ func (u *userRepository) Find() ([]domain_user.User, error) {
 	return users, err
 
 }
+
+func (u *userRepository) FindByEmail(email string) (domain_user.User, error) {
+	result := u.collection.FindOne(context.Background(), bson.M{"email": email})
+
+	var model = mongo_model.User{}
+	err := result.Decode(&model)
+
+	if err != nil {
+		return domain_user.User{}, WrapError(err)
+	}
+
+	return domain_user.User{
+		ID:       model.ID.Hex(),
+		Name:     model.Name,
+		Email:    model.Email,
+		Password: model.Password,
+	}, nil
+}

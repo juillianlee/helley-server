@@ -10,4 +10,5 @@ type UserRepository interface {
 	FindById(id string) (domain_user.User, error)
 	Update(user domain_user.User) error
 	Find() ([]domain_user.User, error)
+	FindByEmail(email string) (domain_user.User, error)
 }

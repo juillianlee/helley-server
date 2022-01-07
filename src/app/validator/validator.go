@@ -8,5 +8,5 @@ var validate = validator.New()
 
 func Validate(i interface{}) error {
 	err := validate.Struct(i)
-	return err.(validator.ValidationErrors)
+	return err
 }
