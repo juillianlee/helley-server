@@ -26,6 +26,7 @@ func testStoreUser(userRepository *repository_memory.UserRepository) {
 	})
 }
 
+// Realiza o teste do cenario de api de um login realizado com sucesso
 func TestLoginSucessfuly(t *testing.T) {
 	e := setup.SetupRouter()
 
@@ -52,6 +53,7 @@ func TestLoginSucessfuly(t *testing.T) {
 	}
 }
 
+// Realiza o teste do cenario de um login que vai dar falha
 func TestLoginFail(t *testing.T) {
 	e := setup.SetupRouter()
 	req := httptest.NewRequest(http.MethodPost, "/login", strings.NewReader(`{"username": "not found", "password": ""}`))
@@ -73,6 +75,7 @@ func TestLoginFail(t *testing.T) {
 	}
 }
 
+// Realiza o teste de um envio de dados invalidos.
 func TestLoginEmptyBody(t *testing.T) {
 	e := setup.SetupRouter()
 	req := httptest.NewRequest(http.MethodPost, "/login", strings.NewReader(``))

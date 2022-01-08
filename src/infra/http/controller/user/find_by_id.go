@@ -1,7 +1,7 @@
 package controller_user
 
 import (
-	"app-helley/src/app/usecase/user"
+	user "app-helley/src/app/usecase/user"
 	"app-helley/src/infra/http/controller"
 	"net/http"
 

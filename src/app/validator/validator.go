@@ -10,3 +10,7 @@ func Validate(i interface{}) error {
 	err := validate.Struct(i)
 	return err
 }
+
+func ValidationErrors(err error) validator.ValidationErrors {
+	return err.(validator.ValidationErrors)
+}

@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"app-helley/src/app/usecase/user"
+	user "app-helley/src/app/usecase/user"
 	"app-helley/src/infra/config"
 	controller_user "app-helley/src/infra/http/controller/user"
 	repository_mongo "app-helley/src/infra/repository/mongo"
