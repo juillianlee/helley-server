@@ -1,8 +1,8 @@
-package repository_mongo
+package repository
 
 import (
 	app_repository "app-helley/src/app/repository"
-	domain_user "app-helley/src/domain/user"
+	domain_user "app-helley/src/domain"
 	mongo_model "app-helley/src/infra/repository/mongo/model"
 	"context"
 	"log"

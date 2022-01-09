@@ -2,8 +2,8 @@ package controller_account
 
 import (
 	app_security "app-helley/src/app/security"
-	"app-helley/src/app/usecase/login"
-	usecase "app-helley/src/app/usecase/user"
+	usecase_account "app-helley/src/app/usecase/account"
+	usecase_user "app-helley/src/app/usecase/user"
 	"app-helley/src/infra/http/setup"
 	repository_memory "app-helley/src/infra/repository/memory"
 	"app-helley/src/infra/security"
@@ -18,8 +18,8 @@ import (
 )
 
 func testStoreUser(userRepository *repository_memory.UserRepository) {
-	store := usecase.NewStoreUserUseCase(userRepository)
-	store.Handle(usecase.StoreUserModel{
+	store := usecase_user.NewStoreUserUseCase(userRepository)
+	store.Handle(usecase_user.StoreUserModel{
 		Name:     "Juillian Lee",
 		Email:    "juillian.lee@gmail.com",
 		Password: "abc123",
@@ -40,7 +40,7 @@ func TestLoginSucessfuly(t *testing.T) {
 
 	tokenManager := security.NewTokenManager("secret")
 
-	loginUseCase := login.NewLoginUseCase(tokenManager, userRepository)
+	loginUseCase := usecase_account.NewLoginUseCase(tokenManager, userRepository)
 	handler := NewLoginController(loginUseCase)
 
 	if assert.NoError(t, handler.Handle(c)) {
@@ -61,7 +61,7 @@ func TestLoginFail(t *testing.T) {
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	tokenManager := security.NewTokenManager("secret")
-	loginUseCase := login.NewLoginUseCase(tokenManager, &repository_memory.UserRepository{})
+	loginUseCase := usecase_account.NewLoginUseCase(tokenManager, &repository_memory.UserRepository{})
 
 	handler := NewLoginController(loginUseCase)
 
@@ -83,7 +83,7 @@ func TestLoginEmptyBody(t *testing.T) {
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	tokenManager := security.NewTokenManager("secret")
-	loginUseCase := login.NewLoginUseCase(tokenManager, &repository_memory.UserRepository{})
+	loginUseCase := usecase_account.NewLoginUseCase(tokenManager, &repository_memory.UserRepository{})
 	handler := NewLoginController(loginUseCase)
 
 	if assert.NoError(t, handler.Handle(c)) {

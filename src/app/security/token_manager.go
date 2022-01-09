@@ -1,4 +1,4 @@
-package app_security
+package security
 
 import (
 	"errors"

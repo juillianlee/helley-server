@@ -1,7 +1,7 @@
-package controller_account
+package controller
 
 import (
-	"app-helley/src/app/usecase/login"
+	usecase_account "app-helley/src/app/usecase/account"
 	app_validator "app-helley/src/app/validator"
 	"app-helley/src/infra/http/controller"
 	"app-helley/src/infra/http/dto"
@@ -11,11 +11,11 @@ import (
 )
 
 type refreshTokenController struct {
-	refreshTokenUseCase login.RefreshTokenUseCase
+	refreshTokenUseCase usecase_account.RefreshTokenUseCase
 }
 
 // Retorna uma instancia do handler para que seja possivel fazer o refresh token
-func NewRefreshTokenController(refreshTokenUseCase login.RefreshTokenUseCase) controller.Handler {
+func NewRefreshTokenController(refreshTokenUseCase usecase_account.RefreshTokenUseCase) controller.Handler {
 	return &refreshTokenController{
 		refreshTokenUseCase: refreshTokenUseCase,
 	}

@@ -1,4 +1,4 @@
-package repository_mongo
+package repository
 
 import (
 	app_repository "app-helley/src/app/repository"

@@ -1,4 +1,4 @@
-package login
+package usecase
 
 import (
 	app_security "app-helley/src/app/security"

@@ -1,4 +1,4 @@
-package controller_user
+package controller
 
 import (
 	user "app-helley/src/app/usecase/user"

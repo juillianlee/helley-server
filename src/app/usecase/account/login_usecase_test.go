@@ -1,4 +1,4 @@
-package login
+package usecase
 
 import (
 	app_repository "app-helley/src/app/repository"

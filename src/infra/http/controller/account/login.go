@@ -1,7 +1,7 @@
 package controller_account
 
 import (
-	"app-helley/src/app/usecase/login"
+	usecase_account "app-helley/src/app/usecase/account"
 	app_validator "app-helley/src/app/validator"
 	"app-helley/src/infra/http/controller"
 	"app-helley/src/infra/http/dto"
@@ -12,10 +12,10 @@ import (
 )
 
 type loginController struct {
-	usecase login.LoginUseCase
+	usecase usecase_account.LoginUseCase
 }
 
-func NewLoginController(loginUseCase login.LoginUseCase) controller.Handler {
+func NewLoginController(loginUseCase usecase_account.LoginUseCase) controller.Handler {
 	return &loginController{
 		usecase: loginUseCase,
 	}

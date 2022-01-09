@@ -1,4 +1,4 @@
-package app_repository
+package repository
 
 import "errors"
 

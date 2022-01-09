@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"app-helley/src/app/usecase/login"
+	usecase_account "app-helley/src/app/usecase/account"
 	"app-helley/src/infra/config"
 	controller_account "app-helley/src/infra/http/controller/account"
 	repository_mongo "app-helley/src/infra/repository/mongo"
@@ -15,10 +15,10 @@ func NewLoginRoutes(db *mongo.Database) []config.Route {
 	tokenManager := security.NewTokenManager(config.JWT_SECRET)
 	userRepository := repository_mongo.NewUserRepository(db)
 
-	loginUseCase := login.NewLoginUseCase(tokenManager, userRepository)
+	loginUseCase := usecase_account.NewLoginUseCase(tokenManager, userRepository)
 	loginControllerHandler := controller_account.NewLoginController(loginUseCase)
 
-	refreshTokenUseCase := login.NewRefreshTokenUseCase(tokenManager)
+	refreshTokenUseCase := usecase_account.NewRefreshTokenUseCase(tokenManager)
 	refreshTokenControllerHandler := controller_account.NewRefreshTokenController(refreshTokenUseCase)
 
 	return []config.Route{

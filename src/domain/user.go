@@ -1,4 +1,4 @@
-package domain_user
+package domain
 
 import (
 	"app-helley/src/app/validator"

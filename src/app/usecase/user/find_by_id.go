@@ -2,7 +2,7 @@ package usecase
 
 import (
 	app_repository "app-helley/src/app/repository"
-	domain_user "app-helley/src/domain/user"
+	domain_user "app-helley/src/domain"
 )
 
 type UserUseCase interface {
