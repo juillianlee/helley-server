@@ -14,9 +14,9 @@ type loginUseCase struct {
 	userRepository app_repository.UserRepository
 }
 
-func NewLoginUseCase(tokenService app_security.TokenManager, userRepository app_repository.UserRepository) LoginUseCase {
+func NewLoginUseCase(tokenManager app_security.TokenManager, userRepository app_repository.UserRepository) LoginUseCase {
 	return &loginUseCase{
-		tokenManager:   tokenService,
+		tokenManager:   tokenManager,
 		userRepository: userRepository,
 	}
 }

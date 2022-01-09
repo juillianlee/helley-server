@@ -9,10 +9,11 @@ import (
 )
 
 var (
-	MONGO_URL  = ""
-	DATABASE   = ""
-	PORT       = 0
-	JWT_SECRET = ""
+	MONGO_URL            = ""
+	DATABASE             = ""
+	PORT                 = 0
+	ACESSS_TOKEN_SECRET  = ""
+	REFRESH_TOKEN_SECRET = ""
 )
 
 func LoadEnviorments() {
@@ -28,7 +29,8 @@ func LoadEnviorments() {
 	}
 	MONGO_URL = os.Getenv("MONGO_URL")
 	DATABASE = os.Getenv("DATABASE")
-	JWT_SECRET = os.Getenv("JWT_SECRET")
+	ACESSS_TOKEN_SECRET = os.Getenv("ACESSS_TOKEN_SECRET")
+	REFRESH_TOKEN_SECRET = os.Getenv("REFRESH_TOKEN_SECRET")
 
 	if MONGO_URL == "" {
 		log.Fatal("Envioriment MONGO_URL not defined")
@@ -38,8 +40,16 @@ func LoadEnviorments() {
 		log.Fatal("Envioriment DATABASE not defined")
 	}
 
-	if JWT_SECRET == "" {
-		log.Fatal("Envioriment JWT_SECRET not defined")
+	if ACESSS_TOKEN_SECRET == "" {
+		log.Fatal("Envioriment ACESSS_TOKEN_SECRET not defined")
+	}
+
+	if ACESSS_TOKEN_SECRET == "" {
+		log.Fatal("Envioriment ACESSS_TOKEN_SECRET not defined")
+	}
+
+	if REFRESH_TOKEN_SECRET == "" {
+		log.Fatal("Envioriment REFRESH_TOKEN_SECRET not defined")
 	}
 
 }

@@ -9,13 +9,15 @@ import (
 
 type (
 	tokenManager struct {
-		jwtSecret string
+		keyAccessToken  string
+		keyRefreshToken string
 	}
 )
 
-func NewTokenManager(jwtSecret string) app_security.TokenManager {
+func NewTokenManager(keyAcessToken string, keyRefreshToken string) app_security.TokenManager {
 	return &tokenManager{
-		jwtSecret: jwtSecret,
+		keyAccessToken:  keyAcessToken,
+		keyRefreshToken: keyRefreshToken,
 	}
 }
 
@@ -43,7 +45,7 @@ func (s *tokenManager) accessToken() (string, error) {
 	rtClaims["sub"] = 1
 	rtClaims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
-	refreshToken, err := jwtRefreshToken.SignedString([]byte(s.jwtSecret))
+	refreshToken, err := jwtRefreshToken.SignedString([]byte(s.keyAccessToken))
 	if err != nil {
 		return "", err
 	}
@@ -60,7 +62,7 @@ func (s *tokenManager) refreshToken() (string, error) {
 	claims["admin"] = true
 	claims["exp"] = time.Now().Add(time.Minute * 15).Unix()
 
-	accessToken, err := token.SignedString([]byte(s.jwtSecret))
+	accessToken, err := token.SignedString([]byte(s.keyRefreshToken))
 	if err != nil {
 		return "", err
 	}
@@ -75,8 +77,12 @@ func (s *tokenManager) RefreshToken(refreshToken string) (app_security.TokenPayl
 			return nil, app_security.ErrUnexpectedSignin
 		}
 
-		return []byte("secret"), nil
+		return []byte(s.keyRefreshToken), nil
 	})
+
+	if err != nil {
+		return app_security.TokenPayload{}, app_security.ErrUnexpectedSignin
+	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		if int(claims["sub"].(float64)) == 1 {
@@ -84,5 +90,5 @@ func (s *tokenManager) RefreshToken(refreshToken string) (app_security.TokenPayl
 		}
 	}
 
-	return app_security.TokenPayload{}, err
+	return app_security.TokenPayload{}, nil
 }

@@ -1,4 +1,4 @@
-package controller_account
+package controller
 
 import (
 	usecase_account "app-helley/src/app/usecase/account"

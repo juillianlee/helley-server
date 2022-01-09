@@ -1,4 +1,4 @@
-package controller_account
+package controller
 
 import (
 	app_security "app-helley/src/app/security"
@@ -38,7 +38,7 @@ func TestLoginSucessfuly(t *testing.T) {
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 
-	tokenManager := security.NewTokenManager("secret")
+	tokenManager := security.NewTokenManager("secretAccessToken", "secretRefreshToken")
 
 	loginUseCase := usecase_account.NewLoginUseCase(tokenManager, userRepository)
 	handler := NewLoginController(loginUseCase)
@@ -60,7 +60,7 @@ func TestLoginFail(t *testing.T) {
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	tokenManager := security.NewTokenManager("secret")
+	tokenManager := security.NewTokenManager("secretAccessToken", "secretRefreshToken")
 	loginUseCase := usecase_account.NewLoginUseCase(tokenManager, &repository_memory.UserRepository{})
 
 	handler := NewLoginController(loginUseCase)
@@ -82,7 +82,7 @@ func TestLoginEmptyBody(t *testing.T) {
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	tokenManager := security.NewTokenManager("secret")
+	tokenManager := security.NewTokenManager("secretAccessToken", "secretRefreshToken")
 	loginUseCase := usecase_account.NewLoginUseCase(tokenManager, &repository_memory.UserRepository{})
 	handler := NewLoginController(loginUseCase)
 
