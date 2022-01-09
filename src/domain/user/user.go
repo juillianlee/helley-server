@@ -19,7 +19,7 @@ type User struct {
 // Compra a hash da senha com senha do usuario
 func (u *User) CheckPasswordHash(password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
-	return err != nil
+	return err == nil
 }
 
 // Valida a estrutura do usuario conforme definido no dominio

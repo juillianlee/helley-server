@@ -3,7 +3,6 @@ package login
 import (
 	app_repository "app-helley/src/app/repository"
 	app_security "app-helley/src/app/security"
-	domain_user "app-helley/src/domain/user"
 )
 
 type LoginUseCase interface {
@@ -34,9 +33,7 @@ func (h *loginUseCase) Handle(username string, password string) (app_security.To
 		return app_security.TokenPayload{}, err
 	}
 
-	hashPassword, err := domain_user.GenerateHashPassword(password)
-
-	if err != nil || !user.CheckPasswordHash(hashPassword) {
+	if err != nil || !user.CheckPasswordHash(password) {
 		return app_security.TokenPayload{}, app_security.ErrUnauthorized
 	}
 

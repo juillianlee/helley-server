@@ -4,6 +4,7 @@ import (
 	domain_user "app-helley/src/domain/user"
 )
 
+// Interface de repositorio do usuario
 type UserRepository interface {
 	Store(user domain_user.User) (domain_user.User, error)
 	DeleteById(id string) error
