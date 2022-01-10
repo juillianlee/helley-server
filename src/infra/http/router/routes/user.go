@@ -24,19 +24,19 @@ func NewUserRoutes(db *mongo.Database) []config.Route {
 			Path:                   "/users",
 			Method:                 http.MethodGet,
 			HandleFunc:             findUsersHandler.Handle,
-			RequiredAuthentication: false,
+			RequiredAuthentication: true,
 		},
 		{
 			Path:                   "/users",
 			Method:                 http.MethodPost,
 			HandleFunc:             storeUserHandler.Handle,
-			RequiredAuthentication: false,
+			RequiredAuthentication: true,
 		},
 		{
 			Path:                   "/users/:id",
 			Method:                 http.MethodGet,
 			HandleFunc:             findByIdUserHandler.Handle,
-			RequiredAuthentication: false,
+			RequiredAuthentication: true,
 		},
 		{
 			Path:                   "/users/:id",
@@ -48,7 +48,7 @@ func NewUserRoutes(db *mongo.Database) []config.Route {
 			Path:                   "/users/:id",
 			Method:                 http.MethodDelete,
 			HandleFunc:             deleteUserByIdHandler.Handle,
-			RequiredAuthentication: false,
+			RequiredAuthentication: true,
 		},
 	}
 }

@@ -2,12 +2,12 @@ package controller
 
 import (
 	usecase_account "app-helley/src/app/usecase/account"
+	"app-helley/src/app/validator"
 	app_validator "app-helley/src/app/validator"
 	"app-helley/src/infra/http/controller"
 	"app-helley/src/infra/http/dto"
 	"net/http"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo"
 )
 
@@ -26,18 +26,24 @@ func (h *loginController) Handle(c echo.Context) (err error) {
 
 	payload := new(dto.LoginRequest)
 	if err := c.Bind(payload); err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, dto.ErrorResponse{
+			StatusCode: http.StatusBadRequest,
+			Message:    err.Error(),
+		})
 	}
 
 	if err := app_validator.Validate(payload); err != nil {
-		return c.JSON(http.StatusBadRequest, err.(validator.ValidationErrors))
+		return c.JSON(http.StatusBadRequest, dto.ErrorResponse{
+			StatusCode: http.StatusBadRequest,
+			Message:    validator.ValidationErrors(err).Error(),
+		})
 	}
 
 	response, err := h.usecase.Handle(payload.Username, payload.Password)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, dto.TokenResponse{
-			AccessToken:  response.AccessToken,
-			RefreshToken: response.RefreshToken,
+		return c.JSON(http.StatusBadRequest, dto.ErrorResponse{
+			StatusCode: http.StatusBadRequest,
+			Message:    err.Error(),
 		})
 	}
 

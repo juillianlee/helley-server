@@ -2,7 +2,7 @@ package dto
 
 type (
 	LoginRequest struct {
-		Username string `validate:"required"`
+		Username string `validate:"required,email"`
 		Password string `validate:"required"`
 	}
 

@@ -20,7 +20,7 @@ func TestRefreshTokenSuccessfuly(t *testing.T) {
 	response, err := usecase.NewLoginUseCase(tokenManager, userRepository).Handle("juillian.lee@gmail.com", "abc123")
 	assert.NoError(t, err)
 
-	response, err = usecase.NewRefreshTokenUseCase(tokenManager).Handle(response.RefreshToken)
+	response, err = usecase.NewRefreshTokenUseCase(tokenManager, userRepository).Handle(response.RefreshToken)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, response.AccessToken)
 	assert.NotEmpty(t, response.RefreshToken)
@@ -35,7 +35,7 @@ func TestRefreshTokenInvalid(t *testing.T) {
 	response, err := usecase.NewLoginUseCase(tokenManager, userRepository).Handle("juillian.lee@gmail.com", "abc123")
 	assert.NoError(t, err)
 
-	response, err = usecase.NewRefreshTokenUseCase(tokenManager).Handle(response.AccessToken)
+	response, err = usecase.NewRefreshTokenUseCase(tokenManager, userRepository).Handle(response.AccessToken)
 	assert.Error(t, err)
 	assert.ErrorIs(t, err, app_security.ErrUnexpectedSignin)
 	assert.Empty(t, response.AccessToken)
@@ -53,7 +53,7 @@ func TestRefreshTokenInvalidSubscription(t *testing.T) {
 
 	tokenManager = security.NewTokenManager("invalid access token", "Invalid refresh token")
 
-	response, err = usecase.NewRefreshTokenUseCase(tokenManager).Handle(response.RefreshToken)
+	response, err = usecase.NewRefreshTokenUseCase(tokenManager, userRepository).Handle(response.RefreshToken)
 	assert.Error(t, err)
 	assert.ErrorIs(t, err, app_security.ErrUnexpectedSignin)
 	assert.Empty(t, response.AccessToken)

@@ -30,17 +30,17 @@ func (h *loginUseCase) Handle(username string, password string) (app_security.To
 	user, err := h.userRepository.FindByEmail(username)
 
 	if err != nil {
-		return app_security.TokenPayload{}, err
+		return app_security.TokenPayload{}, app_security.ErrUserNameOrPasswordInvalid
 	}
 
 	if err != nil || !user.CheckPasswordHash(password) {
-		return app_security.TokenPayload{}, app_security.ErrUnauthorized
+		return app_security.TokenPayload{}, app_security.ErrUserNameOrPasswordInvalid
 	}
 
-	response, err := h.tokenManager.GenerateTokenPair()
+	response, err := h.tokenManager.GenerateTokenPair(user)
 
 	if err != nil {
-		return app_security.TokenPayload{}, err
+		return app_security.TokenPayload{}, app_security.ErrUserNameOrPasswordInvalid
 	}
 
 	return response, nil

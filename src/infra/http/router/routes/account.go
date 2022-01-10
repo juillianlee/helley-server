@@ -18,7 +18,7 @@ func NewLoginRoutes(db *mongo.Database) []config.Route {
 	loginUseCase := usecase_account.NewLoginUseCase(tokenManager, userRepository)
 	loginControllerHandler := controller_account.NewLoginController(loginUseCase)
 
-	refreshTokenUseCase := usecase_account.NewRefreshTokenUseCase(tokenManager)
+	refreshTokenUseCase := usecase_account.NewRefreshTokenUseCase(tokenManager, userRepository)
 	refreshTokenControllerHandler := controller_account.NewRefreshTokenController(refreshTokenUseCase)
 
 	return []config.Route{

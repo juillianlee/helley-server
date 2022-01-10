@@ -2,6 +2,7 @@ package security
 
 import (
 	app_security "app-helley/src/app/security"
+	"app-helley/src/domain"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -21,14 +22,14 @@ func NewTokenManager(keyAcessToken string, keyRefreshToken string) app_security.
 	}
 }
 
-func (s *tokenManager) GenerateTokenPair() (app_security.TokenPayload, error) {
-	accessToken, err := s.accessToken()
+func (s *tokenManager) GenerateTokenPair(u domain.User) (app_security.TokenPayload, error) {
+	accessToken, err := s.accessToken(u)
 
 	if err != nil {
 		return app_security.TokenPayload{}, err
 	}
 
-	refreshToken, err := s.refreshToken()
+	refreshToken, err := s.refreshToken(u)
 	if err != nil {
 		return app_security.TokenPayload{}, err
 	}
@@ -39,30 +40,13 @@ func (s *tokenManager) GenerateTokenPair() (app_security.TokenPayload, error) {
 	}, nil
 }
 
-func (s *tokenManager) accessToken() (string, error) {
-	jwtRefreshToken := jwt.New(jwt.SigningMethodHS256)
-	rtClaims := jwtRefreshToken.Claims.(jwt.MapClaims)
-	rtClaims["sub"] = 1
-	rtClaims["exp"] = time.Now().Add(time.Hour * 72).Unix()
-
-	refreshToken, err := jwtRefreshToken.SignedString([]byte(s.keyAccessToken))
-	if err != nil {
-		return "", err
-	}
-
-	return refreshToken, nil
-}
-
-func (s *tokenManager) refreshToken() (string, error) {
+func (s *tokenManager) accessToken(u domain.User) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
-
 	claims := token.Claims.(jwt.MapClaims)
-	claims["sub"] = 1
-	claims["name"] = "Juillian"
-	claims["admin"] = true
+	claims["sub"] = u.ID
 	claims["exp"] = time.Now().Add(time.Minute * 15).Unix()
 
-	accessToken, err := token.SignedString([]byte(s.keyRefreshToken))
+	accessToken, err := token.SignedString([]byte(s.keyAccessToken))
 	if err != nil {
 		return "", err
 	}
@@ -70,7 +54,22 @@ func (s *tokenManager) refreshToken() (string, error) {
 	return accessToken, nil
 }
 
-func (s *tokenManager) RefreshToken(refreshToken string) (app_security.TokenPayload, error) {
+func (s *tokenManager) refreshToken(u domain.User) (string, error) {
+	token := jwt.New(jwt.SigningMethodHS256)
+
+	claims := token.Claims.(jwt.MapClaims)
+	claims["sub"] = u.ID
+	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+
+	refreshToken, err := token.SignedString([]byte(s.keyRefreshToken))
+	if err != nil {
+		return "", err
+	}
+
+	return refreshToken, nil
+}
+
+func (s *tokenManager) ValidateRefreshToken(refreshToken string) (map[string]interface{}, error) {
 	token, err := jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {
 
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -81,14 +80,33 @@ func (s *tokenManager) RefreshToken(refreshToken string) (app_security.TokenPayl
 	})
 
 	if err != nil {
-		return app_security.TokenPayload{}, app_security.ErrUnexpectedSignin
+		return map[string]interface{}{}, app_security.ErrUnexpectedSignin
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		if int(claims["sub"].(float64)) == 1 {
-			return s.GenerateTokenPair()
-		}
+		return claims, nil
 	}
 
-	return app_security.TokenPayload{}, nil
+	return map[string]interface{}{}, app_security.ErrUnexpectedSignin
+}
+
+func (s *tokenManager) ValidateAccessToken(accessToken string) (map[string]interface{}, error) {
+	token, err := jwt.Parse(accessToken, func(token *jwt.Token) (interface{}, error) {
+
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, app_security.ErrUnexpectedSignin
+		}
+
+		return []byte(s.keyAccessToken), nil
+	})
+
+	if err != nil {
+		return map[string]interface{}{}, app_security.ErrUnexpectedSignin
+	}
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		return claims, nil
+	}
+
+	return map[string]interface{}{}, app_security.ErrUnexpectedSignin
 }

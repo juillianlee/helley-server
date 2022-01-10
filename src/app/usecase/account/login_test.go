@@ -21,7 +21,7 @@ func testStoreUser(userRepository *repository_memory.UserRepository) {
 }
 
 func TestLoginUseCaseSuccessfuly(t *testing.T) {
-	tokenManager := security.NewTokenManager("abc123")
+	tokenManager := security.NewTokenManager("accessTokenSecret", "refreshTokenSecret")
 
 	userRepository := &repository_memory.UserRepository{}
 
@@ -39,7 +39,7 @@ func TestLoginUseCaseSuccessfuly(t *testing.T) {
 
 func TestLoginUseCaseUserNotFound(t *testing.T) {
 
-	tokenManager := security.NewTokenManager("abc123")
+	tokenManager := security.NewTokenManager("accessTokenSecret", "refreshTokenSecret")
 
 	userRepository := &repository_memory.UserRepository{}
 
@@ -53,7 +53,7 @@ func TestLoginUseCaseUserNotFound(t *testing.T) {
 }
 
 func TestLoginUseCasePasswordError(t *testing.T) {
-	tokenManager := security.NewTokenManager("abc123")
+	tokenManager := security.NewTokenManager("accessTokenSecret", "refreshTokenSecret")
 
 	userRepository := &repository_memory.UserRepository{}
 
@@ -69,7 +69,7 @@ func TestLoginUseCasePasswordError(t *testing.T) {
 }
 
 func TestLoginUseCaseUsernameInvalid(t *testing.T) {
-	tokenManager := security.NewTokenManager("abc123")
+	tokenManager := security.NewTokenManager("accessTokenSecret", "refreshTokenSecret")
 
 	userRepository := &repository_memory.UserRepository{}
 
