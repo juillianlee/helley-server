@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	app_repository "app-helley/src/app/repository"
 	app_security "app-helley/src/app/security"
 	usecase "app-helley/src/app/usecase/user"
 	repository_memory "app-helley/src/infra/repository/memory"
@@ -49,7 +48,7 @@ func TestLoginUseCaseUserNotFound(t *testing.T) {
 
 	assert.Empty(t, response.AccessToken)
 	assert.Empty(t, response.RefreshToken)
-	assert.ErrorIs(t, err, app_repository.ErrNotFoundRegister)
+	assert.ErrorIs(t, err, app_security.ErrUserNameOrPasswordInvalid)
 }
 
 func TestLoginUseCasePasswordError(t *testing.T) {
@@ -65,7 +64,7 @@ func TestLoginUseCasePasswordError(t *testing.T) {
 
 	assert.Empty(t, response.AccessToken)
 	assert.Empty(t, response.RefreshToken)
-	assert.ErrorIs(t, err, app_security.ErrUnauthorized)
+	assert.ErrorIs(t, err, app_security.ErrUserNameOrPasswordInvalid)
 }
 
 func TestLoginUseCaseUsernameInvalid(t *testing.T) {
@@ -81,5 +80,5 @@ func TestLoginUseCaseUsernameInvalid(t *testing.T) {
 
 	assert.Empty(t, response.AccessToken)
 	assert.Empty(t, response.RefreshToken)
-	assert.ErrorIs(t, err, app_repository.ErrNotFoundRegister)
+	assert.ErrorIs(t, err, app_security.ErrUserNameOrPasswordInvalid)
 }

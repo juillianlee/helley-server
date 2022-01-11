@@ -34,7 +34,7 @@ func (usecase *storeUserUseCase) Handle(storeUser StoreUserModel) (domain_user.U
 	}
 
 	if err := user.Validate(); err != nil {
-		return user, nil
+		return user, err
 	}
 
 	password, err := domain_user.GenerateHashPassword(storeUser.Password)

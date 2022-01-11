@@ -2,6 +2,7 @@ package controller
 
 import (
 	user "app-helley/src/app/usecase/user"
+	"app-helley/src/app/validator"
 	"app-helley/src/infra/http/controller"
 	"app-helley/src/infra/http/dto"
 	"net/http"
@@ -25,7 +26,7 @@ func (h *storeUserController) Handle(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	if err := c.Validate(storeUser); err != nil {
+	if err := validator.Validate(storeUser); err != nil {
 		return err
 	}
 

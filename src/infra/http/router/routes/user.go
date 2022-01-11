@@ -42,7 +42,7 @@ func NewUserRoutes(db *mongo.Database) []config.Route {
 			Path:                   "/users/:id",
 			Method:                 http.MethodPut,
 			HandleFunc:             updateUserHandler.Handle,
-			RequiredAuthentication: false,
+			RequiredAuthentication: true,
 		},
 		{
 			Path:                   "/users/:id",
