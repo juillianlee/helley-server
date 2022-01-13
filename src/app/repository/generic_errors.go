@@ -8,7 +8,6 @@ var (
 	ErrDeleteEntity     = errors.New("fail delete register")
 	ErrStoreEntity      = errors.New("fail store entity")
 	ErrUpdateEntity     = errors.New("fail update entity")
-	ErrNoResults        = errors.New("no results")
 )
 
 func ErrGenericRepository(msg string) error {

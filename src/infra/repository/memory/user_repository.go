@@ -3,6 +3,8 @@ package repository
 import (
 	app_repository "app-helley/src/app/repository"
 	domain_user "app-helley/src/domain"
+
+	"github.com/google/uuid"
 )
 
 type UserRepository struct {
@@ -10,6 +12,7 @@ type UserRepository struct {
 }
 
 func (rep *UserRepository) Store(user domain_user.User) (domain_user.User, error) {
+	user.ID = uuid.New().String()
 	rep.users = append(rep.users, user)
 	return user, nil
 }

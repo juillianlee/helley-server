@@ -21,6 +21,9 @@ func NewLoginRoutes(db *mongo.Database) []config.Route {
 	refreshTokenUseCase := usecase_account.NewRefreshTokenUseCase(tokenManager, userRepository)
 	refreshTokenControllerHandler := controller_account.NewRefreshTokenController(refreshTokenUseCase)
 
+	createAccountUseCase := usecase_account.NewCreateAccountUseCase(userRepository)
+	createAccountController := controller_account.NewCreateAccountController(createAccountUseCase)
+
 	return []config.Route{
 		{
 			Path:                   "/login",
@@ -32,6 +35,12 @@ func NewLoginRoutes(db *mongo.Database) []config.Route {
 			Path:                   "/refreshToken",
 			Method:                 http.MethodPost,
 			HandleFunc:             refreshTokenControllerHandler.Handle,
+			RequiredAuthentication: false,
+		},
+		{
+			Path:                   "/sign-up",
+			Method:                 http.MethodPost,
+			HandleFunc:             createAccountController.Handle,
 			RequiredAuthentication: false,
 		},
 	}

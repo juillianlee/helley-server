@@ -14,7 +14,7 @@ import (
 func HTTPErrorHandler(err error, c echo.Context) {
 
 	switch {
-	case errors.Is(err, app_repository.ErrNoResults):
+	case errors.Is(err, app_repository.ErrNotFoundRegister):
 		c.JSON(http.StatusNotFound, dto.ErrorResponse{Message: err.Error(), StatusCode: http.StatusNotFound})
 	case errors.Is(err, app_repository.ErrDuplicateKey):
 		c.JSON(http.StatusBadRequest, dto.ErrorResponse{Message: err.Error(), StatusCode: http.StatusBadRequest})

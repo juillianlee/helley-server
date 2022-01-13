@@ -12,6 +12,7 @@ import (
 	"app-helley/src/app/validator"
 	"app-helley/src/domain"
 	"errors"
+	"fmt"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -39,24 +40,24 @@ func NewCreateAccountUseCase(userRepository repository.UserRepository) CreateAcc
 
 func (u *createAccountUseCase) Handle(createAccount CreateAccountModel) (domain.User, error) {
 	if err := validator.Validate(createAccount); err != nil {
-		log.Infof("Invalid data on createAccount: %s", err.Error())
+		log.Infof("Invalid data on createAccount: %v", validator.ValidationErrors(err))
+		return domain.User{}, validator.ValidationErrors(err)
+	}
+
+	user, err := u.userRepository.FindByEmail(createAccount.Email)
+	if err != nil && !errors.Is(err, repository.ErrNotFoundRegister) {
+		log.Errorf("Transaction Find user by e-mail failed: %v", err)
 		return domain.User{}, err
 	}
 
-	_, err := u.userRepository.FindByEmail(createAccount.Email)
-	if err != nil && errors.Is(err, repository.ErrNoResults) {
+	if user.ID != "" {
 		log.Warningf("User by e-mail %s already exists", createAccount.Email)
-		return domain.User{}, err
-	}
-
-	if err != nil {
-		log.Errorf("Transaction Find user by e-mail failed: %s", err.Error())
-		return domain.User{}, err
+		return domain.User{}, fmt.Errorf("user by e-mail %s already exists", createAccount.Email)
 	}
 
 	hashPassword, err := domain.GenerateHashPassword(createAccount.Password)
 	if err != nil {
-		log.Errorf("Generate hash password error: %s", err.Error())
+		log.Errorf("Generate hash password error: %v", err)
 		return domain.User{}, err
 	}
 
@@ -68,10 +69,10 @@ func (u *createAccountUseCase) Handle(createAccount CreateAccountModel) (domain.
 		UpdateAt:  time.Now(),
 	}
 
-	user, err := u.userRepository.Store(newUser)
+	user, err = u.userRepository.Store(newUser)
 
 	if err != nil {
-		log.Errorf("Transaction store user failed: ", err.Error())
+		log.Errorf("Transaction store user failed: %v", err)
 		return domain.User{}, err
 	}
 

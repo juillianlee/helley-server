@@ -11,7 +11,7 @@ import (
 func WrapError(err error) error {
 	switch {
 	case errors.Is(err, mongo.ErrNoDocuments):
-		return app_repository.ErrNoResults
+		return app_repository.ErrNotFoundRegister
 	case mongo.IsDuplicateKeyError(err):
 		return app_repository.ErrDuplicateKey
 	case errors.Is(err, mongo.ErrInvalidIndexValue):

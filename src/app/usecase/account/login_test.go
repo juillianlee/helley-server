@@ -2,7 +2,6 @@ package usecase
 
 import (
 	app_security "app-helley/src/app/security"
-	usecase "app-helley/src/app/usecase/user"
 	repository_memory "app-helley/src/infra/repository/memory"
 	"app-helley/src/infra/security"
 	"testing"
@@ -11,8 +10,7 @@ import (
 )
 
 func testStoreUser(userRepository *repository_memory.UserRepository) {
-	store := usecase.NewStoreUserUseCase(userRepository)
-	store.Handle(usecase.StoreUserModel{
+	NewCreateAccountUseCase(userRepository).Handle(CreateAccountModel{
 		Name:     "Juillian Lee",
 		Email:    "juillian.lee@gmail.com",
 		Password: "abc123",
