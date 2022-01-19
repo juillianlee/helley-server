@@ -1,11 +1,11 @@
 package controller
 
 import (
-	usecase "app-helley/src/app/usecase/account"
-	"app-helley/src/infra/http/dto"
-	"app-helley/src/infra/http/setup"
-	repository "app-helley/src/infra/repository/memory"
 	"encoding/json"
+	usecase "helley/src/app/usecase/account"
+	"helley/src/infra/http/dto"
+	"helley/src/infra/http/setup"
+	repository "helley/src/infra/repository/memory"
 	"net/http"
 	"net/http/httptest"
 	"strings"

@@ -1,11 +1,11 @@
 package routes
 
 import (
-	usecase_account "app-helley/src/app/usecase/account"
-	"app-helley/src/infra/config"
-	controller_account "app-helley/src/infra/http/controller/account"
-	repository_mongo "app-helley/src/infra/repository/mongo"
-	"app-helley/src/infra/security"
+	usecase_account "helley/src/app/usecase/account"
+	"helley/src/infra/config"
+	controller_account "helley/src/infra/http/controller/account"
+	repository_mongo "helley/src/infra/repository/mongo"
+	"helley/src/infra/security"
 	"net/http"
 
 	"go.mongodb.org/mongo-driver/mongo"

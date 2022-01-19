@@ -1,8 +1,8 @@
 package security
 
 import (
-	app_security "app-helley/src/app/security"
-	"app-helley/src/domain"
+	app_security "helley/src/app/security"
+	"helley/src/domain"
 	"time"
 
 	"github.com/golang-jwt/jwt"

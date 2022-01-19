@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	repository "app-helley/src/infra/repository/memory"
 	"fmt"
+	repository "helley/src/infra/repository/memory"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

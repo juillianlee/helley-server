@@ -1,12 +1,12 @@
 package router
 
 import (
-	"app-helley/src/infra/config"
-	"app-helley/src/infra/http/router/routes"
-	"app-helley/src/infra/http/setup"
-	"app-helley/src/infra/middleware"
-	repository "app-helley/src/infra/repository/mongo"
-	"app-helley/src/infra/security"
+	"helley/src/infra/config"
+	"helley/src/infra/http/router/routes"
+	"helley/src/infra/http/setup"
+	"helley/src/infra/middleware"
+	repository "helley/src/infra/repository/mongo"
+	"helley/src/infra/security"
 	"net/http"
 
 	"github.com/labstack/echo"

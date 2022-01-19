@@ -1,10 +1,10 @@
 package repository
 
 import (
-	app_repository "app-helley/src/app/repository"
-	domain_user "app-helley/src/domain"
-	mongo_model "app-helley/src/infra/repository/mongo/model"
 	"context"
+	app_repository "helley/src/app/repository"
+	domain_user "helley/src/domain"
+	mongo_model "helley/src/infra/repository/mongo/model"
 	"log"
 	"time"
 

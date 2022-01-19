@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	app_repository "app-helley/src/app/repository"
+	app_repository "helley/src/app/repository"
 )
 
 type DeleteUserUseCase interface {

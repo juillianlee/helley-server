@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"app-helley/src/infra/config"
-	hWebsocket "app-helley/src/infra/http/websocket"
 	"fmt"
+	"helley/src/infra/config"
+	hWebsocket "helley/src/infra/http/websocket"
 	"net/http"
 
 	"github.com/gorilla/websocket"

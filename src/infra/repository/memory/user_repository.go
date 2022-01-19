@@ -1,8 +1,8 @@
 package repository
 
 import (
-	app_repository "app-helley/src/app/repository"
-	domain_user "app-helley/src/domain"
+	app_repository "helley/src/app/repository"
+	domain_user "helley/src/domain"
 
 	"github.com/google/uuid"
 )

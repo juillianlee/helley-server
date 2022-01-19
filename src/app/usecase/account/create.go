@@ -8,11 +8,11 @@
 package usecase
 
 import (
-	"app-helley/src/app/repository"
-	"app-helley/src/app/validator"
-	"app-helley/src/domain"
 	"errors"
 	"fmt"
+	"helley/src/app/repository"
+	"helley/src/app/validator"
+	"helley/src/domain"
 	"time"
 
 	log "github.com/sirupsen/logrus"

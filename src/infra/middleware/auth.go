@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"app-helley/src/app/repository"
-	"app-helley/src/app/security"
-	"app-helley/src/domain"
+	"helley/src/app/repository"
+	"helley/src/app/security"
+	"helley/src/domain"
 	"strings"
 
 	"github.com/labstack/echo"

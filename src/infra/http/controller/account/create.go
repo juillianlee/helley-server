@@ -1,10 +1,10 @@
 package controller
 
 import (
-	usecase "app-helley/src/app/usecase/account"
-	"app-helley/src/app/validator"
-	"app-helley/src/infra/http/controller"
-	"app-helley/src/infra/http/dto"
+	usecase "helley/src/app/usecase/account"
+	"helley/src/app/validator"
+	"helley/src/infra/http/controller"
+	"helley/src/infra/http/dto"
 	"net/http"
 
 	"github.com/labstack/echo"

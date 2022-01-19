@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	app_repository "app-helley/src/app/repository"
-	app_security "app-helley/src/app/security"
+	app_repository "helley/src/app/repository"
+	app_security "helley/src/app/security"
 )
 
 type LoginUseCase interface {

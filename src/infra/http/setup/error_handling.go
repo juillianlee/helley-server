@@ -1,9 +1,9 @@
 package setup
 
 import (
-	app_repository "app-helley/src/app/repository"
-	"app-helley/src/app/security"
-	"app-helley/src/infra/http/dto"
+	app_repository "helley/src/app/repository"
+	"helley/src/app/security"
+	"helley/src/infra/http/dto"
 	"net/http"
 
 	"errors"

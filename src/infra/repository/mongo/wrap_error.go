@@ -1,8 +1,8 @@
 package repository
 
 import (
-	app_repository "app-helley/src/app/repository"
 	"errors"
+	app_repository "helley/src/app/repository"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

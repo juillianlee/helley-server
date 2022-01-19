@@ -1,10 +1,10 @@
 package controller
 
 import (
-	app_security "app-helley/src/app/security"
-	usecase "app-helley/src/app/usecase/account"
-	repository_memory "app-helley/src/infra/repository/memory"
-	"app-helley/src/infra/security"
+	app_security "helley/src/app/security"
+	usecase "helley/src/app/usecase/account"
+	repository_memory "helley/src/infra/repository/memory"
+	"helley/src/infra/security"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

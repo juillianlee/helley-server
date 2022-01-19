@@ -1,13 +1,13 @@
 package controller
 
 import (
-	app_security "app-helley/src/app/security"
-	usecase_account "app-helley/src/app/usecase/account"
-	usecase_user "app-helley/src/app/usecase/user"
-	"app-helley/src/infra/http/setup"
-	repository_memory "app-helley/src/infra/repository/memory"
-	"app-helley/src/infra/security"
 	"encoding/json"
+	app_security "helley/src/app/security"
+	usecase_account "helley/src/app/usecase/account"
+	usecase_user "helley/src/app/usecase/user"
+	"helley/src/infra/http/setup"
+	repository_memory "helley/src/infra/repository/memory"
+	"helley/src/infra/security"
 	"net/http"
 	"net/http/httptest"
 	"strings"

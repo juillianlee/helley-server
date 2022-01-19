@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"app-helley/src/app/validator"
+	"helley/src/app/validator"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"

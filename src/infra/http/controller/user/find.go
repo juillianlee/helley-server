@@ -1,8 +1,8 @@
 package controller
 
 import (
-	user "app-helley/src/app/usecase/user"
-	"app-helley/src/infra/http/controller"
+	user "helley/src/app/usecase/user"
+	"helley/src/infra/http/controller"
 	"net/http"
 
 	"github.com/labstack/echo"

@@ -1,8 +1,8 @@
 package security
 
 import (
-	"app-helley/src/domain"
 	"errors"
+	"helley/src/domain"
 )
 
 var ErrUnauthorized = errors.New("unauthorized")

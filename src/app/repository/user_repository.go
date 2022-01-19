@@ -1,7 +1,7 @@
 package repository
 
 import (
-	domain_user "app-helley/src/domain"
+	domain_user "helley/src/domain"
 )
 
 // Interface de repositorio do usuario

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"app-helley/src/infra/config"
-	"app-helley/src/infra/http/router"
 	"fmt"
+	"helley/src/infra/config"
+	"helley/src/infra/http/router"
 )
 
 func main() {
