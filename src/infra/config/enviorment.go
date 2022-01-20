@@ -12,7 +12,7 @@ var (
 	MONGO_URL            = ""
 	DATABASE             = ""
 	PORT                 = 0
-	ACESSS_TOKEN_SECRET  = ""
+	ACCESS_TOKEN_SECRET  = ""
 	REFRESH_TOKEN_SECRET = ""
 )
 
@@ -29,7 +29,7 @@ func LoadEnviorments() {
 	}
 	MONGO_URL = os.Getenv("MONGO_URL")
 	DATABASE = os.Getenv("DATABASE")
-	ACESSS_TOKEN_SECRET = os.Getenv("ACESSS_TOKEN_SECRET")
+	ACCESS_TOKEN_SECRET = os.Getenv("ACCESS_TOKEN_SECRET")
 	REFRESH_TOKEN_SECRET = os.Getenv("REFRESH_TOKEN_SECRET")
 
 	if MONGO_URL == "" {
@@ -40,12 +40,12 @@ func LoadEnviorments() {
 		log.Fatal("Envioriment DATABASE not defined")
 	}
 
-	if ACESSS_TOKEN_SECRET == "" {
-		log.Fatal("Envioriment ACESSS_TOKEN_SECRET not defined")
+	if ACCESS_TOKEN_SECRET == "" {
+		log.Fatal("Envioriment ACCESS_TOKEN_SECRET not defined")
 	}
 
-	if ACESSS_TOKEN_SECRET == "" {
-		log.Fatal("Envioriment ACESSS_TOKEN_SECRET not defined")
+	if ACCESS_TOKEN_SECRET == "" {
+		log.Fatal("Envioriment ACCESS_TOKEN_SECRET not defined")
 	}
 
 	if REFRESH_TOKEN_SECRET == "" {

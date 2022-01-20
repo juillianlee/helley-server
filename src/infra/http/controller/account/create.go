@@ -45,7 +45,7 @@ func (h *createAccountController) Handle(c echo.Context) error {
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResponse{
-			StatusCode: http.StatusInternalServerError,
+			StatusCode: http.StatusBadRequest,
 			Message:    err.Error(),
 		})
 	}

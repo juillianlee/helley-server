@@ -12,7 +12,7 @@ import (
 )
 
 func NewLoginRoutes(db *mongo.Database) []config.Route {
-	tokenManager := security.NewTokenManager(config.ACESSS_TOKEN_SECRET, config.REFRESH_TOKEN_SECRET)
+	tokenManager := security.NewTokenManager(config.ACCESS_TOKEN_SECRET, config.REFRESH_TOKEN_SECRET)
 	userRepository := repository_mongo.NewUserRepository(db)
 
 	loginUseCase := usecase_account.NewLoginUseCase(tokenManager, userRepository)

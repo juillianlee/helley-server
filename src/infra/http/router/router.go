@@ -29,7 +29,7 @@ func NewRouter(db *mongo.Database) *echo.Echo {
 	routesHandle = append(routesHandle, websocketRoutes...)
 
 	userRepository := repository.NewUserRepository(db)
-	tokenManager := security.NewTokenManager(config.ACESSS_TOKEN_SECRET, config.REFRESH_TOKEN_SECRET)
+	tokenManager := security.NewTokenManager(config.ACCESS_TOKEN_SECRET, config.REFRESH_TOKEN_SECRET)
 	authMiddleware := middleware.NewAuthMiddleware(tokenManager, userRepository)
 
 	var globalMiddlewares []echo.MiddlewareFunc
