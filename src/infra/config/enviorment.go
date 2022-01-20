@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 var (
@@ -18,10 +18,6 @@ var (
 
 func LoadEnviorments() {
 	var err error
-
-	if err = godotenv.Load(); err != nil {
-		log.Fatal(err)
-	}
 
 	PORT, err = strconv.Atoi(os.Getenv("PORT"))
 	if err != nil || PORT == 0 {
