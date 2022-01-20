@@ -4,17 +4,21 @@ on:
   push:
     branches:
       - main
+  pull-request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Login to Heroku Container registry
-      env: 
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: heroku container:login 
-    - name: Build and push
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: heroku container:push -a helley --recursive
+    - uses: actions/checkout@v2
+
+    - name: Deploy application
+      if: ${{ github.ref == 'refs/heads/main' }}
+      uses: akhileshns/heroku-deploy@v3.12.12
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "helley"
+        heroku_email: "juillian.lee@gmail.com"
+        buildpack: "https://github.com/zidizei/heroku-buildpack-tsc#v2.0"
